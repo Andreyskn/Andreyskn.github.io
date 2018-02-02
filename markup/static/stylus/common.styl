@@ -1,0 +1,315 @@
+// Common styles of the project
+body
+    background linear-gradient(135.06deg, #4A3577 0%, #273B5D 43.5%, #212E45 100%)
+    font-family Roboto
+    color #222026
+    padding-bottom 100px
+
+.main-content
+    width 1170px
+    margin 0 auto
+
+    &__title
+        color #fff
+        font-size 54px
+        font-weight 100
+        line-height 1
+        margin 30px 50px
+
+.data
+    background #fff
+    border-radius 8px
+    padding 50px
+    position relative
+
+    &__table
+        width 100%
+        margin-bottom 32px
+
+    &__description
+        margin-bottom 40px
+
+    &__search-panel
+        display inline-block
+        position absolute
+        right calc(100%+20px)
+        top 0
+        border-radius 5px
+        box-shadow 0 2px 6px 0 rgba(34,32,38,0.2)
+
+.tabs
+    padding 0
+    font-size: 0
+    font-weight 500
+
+    &__item
+        display inline-block
+
+    &__link
+        text-decoration none
+        color #222026
+        &.is_active
+            color #697076
+
+    &_rank_main
+        margin-bottom 34px
+    &_rank_main ^[0]__item
+        margin-right 35px
+    &_rank_main ^[0]__link
+        border-bottom 1px solid #D3D7DA
+        border-bottom-style dashed
+        font-size 18px
+        &.is_active
+            border: none
+    &_rank_main ^[0]__link_active
+        border: none
+
+    &_rank_extra
+        margin-bottom 28px
+    &_rank_extra ^[0]__item:first-child ^[0]__link
+        border-radius 3px 0 0 3px
+        margin-left: 0
+    &_rank_extra ^[0]__item:last-child ^[0]__link
+        border-radius 0 3px 3px 0
+    &_rank_extra ^[0]__link
+        width: 268px
+        height: 52px
+        font-size 16px
+        border 1px solid #D3D7DA
+        display flex
+        justify-content: center
+        align-items: center
+        margin-left: -1px
+        &.is_active
+            background-color #F4F5F7
+.table
+    font-size: 14px
+    font-weight 300
+    &__head-row
+        height: 100px
+    &__head-cell
+        position relative
+        line-height 18px
+        font-weight: 300
+        min-width 100px
+        border 1px solid #85858E
+        padding 18px 10px
+        cursor pointer
+        &:first-child
+            width 140px
+        &:before
+            content ""
+            border-left 6px solid transparent
+            border-right 6px solid transparent
+            border-top 7px solid #69862D
+            position absolute
+            top: 8px
+            right 8px
+        &:after
+            content ""
+            border-left 6px solid transparent
+            border-right 6px solid transparent
+            border-bottom 7px solid #69862D
+            position absolute
+            top: 8px
+            right 20px
+        &-text
+            display inline-block
+            max-width 90px
+            &_tooltip
+                text-decoration underline
+                text-decoration-color #D3D7DA
+        // &.sort_up
+
+
+    &__body
+        height: 50px
+        overflow-y auto
+
+    &__body-cell
+        border 1px solid #D3D7DA
+        border-top none
+        border-bottom none
+        padding 0 16px
+        text-align center
+        font-weight 500
+
+        &_change_grow
+            color #318624
+        &_change_fall
+            color #E2322A
+        &:first-child
+            text-align left
+        &:nth-child(n+3):nth-child(-n+5)
+            font-weight 300
+
+    &__body-row
+        height 45px
+        &:last-child
+            border-bottom 1px solid #D3D7DA
+        &:nth-child(odd)
+            background-color #F4F5F7
+
+.description
+    &__item
+        font-size 13px
+        line-height 18px
+        color #697076
+        margin 0
+
+.accordeon
+
+    &__button
+        display inline-block
+        color #222026
+        border-bottom 1px solid #D3D7DA
+        border-bottom-style dashed
+        height 32px
+        font-size 18px
+        font-weight 300
+        line-height 32px
+        margin-bottom 35px
+        position relative
+        cursor pointer
+
+    &__item-list
+        display flex
+        flex-wrap wrap
+
+    &__item
+        flex 1 1 50%
+        height 30px
+        margin-bottom 7px
+        padding-left 34px
+        background-image embedurl("static/img/svg/blank.svg", "utf8");
+        background-repeat no-repeat
+        background-position 0 50%
+        &:first-child
+            background-image embedurl("static/img/svg/pdf.svg", "utf8");
+
+        &-text
+            font-size 14px
+            text-decoration underline
+            font-weight 500
+            color #222026
+            line-height: 30px;
+            cursor pointer
+
+.search-panel
+    padding 16px
+    background #fff
+    display flex
+    flex-wrap wrap
+    justify-content center
+
+    &__search-button
+        height 52px
+        width 52px
+        border 1px solid #D3D7DA
+        border-radius 3px
+        background-image embedurl("static/img/svg/search.svg", "utf8");
+        background-repeat no-repeat
+        background-position 50% 50%
+        cursor pointer
+
+    &__currencies
+        padding 0
+        margin 16px 0
+        &-item
+            margin 0 auto
+            display flex
+            width 52px
+            height 52px
+            border 1px solid #D3D7DA
+            justify-content center
+            align-items center
+            margin-top -1px;
+            cursor pointer
+            &.is_active
+                background #F4F5F7
+            &:first-child
+                margin-top 0
+                border-radius 3px 3px 0 0
+            &:last-child
+                border-radius 0 0 3px 3px
+    &__volume
+        margin-bottom 12px
+        &-heading
+            text-align center
+            font-size 14px
+            font-weight 500
+            margin-bottom 8px
+        &-value
+            width 78px
+            padding 10px 21px
+            border 1px solid #D3D7DA
+            border-radius 3px
+
+    &__display-options
+        font-size 0
+
+        &-radio
+            position: absolute
+            opacity: 0
+            cursor: pointer
+
+        &-item
+            font-size 13px
+            font-weight 500
+            color #697076
+            vertical-align middle
+            cursor pointer
+            display block
+            position: relative
+            padding-left 20px
+            margin-bottom 10px
+            user-select none
+
+            &:last-child
+                margin-bottom 0
+
+
+            &.is_active
+                color #222026
+
+        &-checkmark
+            position absolute
+            top calc(50% - 6px)
+            left 0
+            height: 12px
+            width: 12px
+            border 1px solid #D3D7DA
+            border-radius 50%
+
+            ^[-1]-radio:checked ~ &
+                background-color #69862D
+                border none
+
+.page__social
+    width 50px
+    position fixed
+    right 16px
+    top calc(50% - 107.5px)
+
+.social
+
+    &__links
+        margin 0
+        padding 0
+    &__item
+        display inline-block
+        height 43px
+        width 100%
+        background #464951
+        &:first-child
+            border-radius 3px 3px 0 0
+        &:last-child
+            border-radius 0 0 3px 3px
+        &-link
+            height 100%
+            display flex
+            justify-content center
+            align-items center
+            border-bottom 1px solid #51555C
+        &-image
+            font-size 24px

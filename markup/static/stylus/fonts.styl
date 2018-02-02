@@ -1,0 +1,100 @@
+/* Your custom fonts here */
+
+/* Example
+
+@font-face {
+    font-family: 'CustomFont';
+    src: url('../fonts/Custom-Font.eot');
+    src: url('../fonts/Custom-Font.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/Custom-Font.woff') format('woff'),
+         url('../fonts/Custom-Font.svg#custom_font') format('svg');
+    font-weight: 400;       // For normal width. It could has another value
+    font-style: normal;     // Also could has another value
+    }
+
+
+// Var for using custom font
+$CustomFont: 'CustomFont', Helvetica, Arial, sans-serif;
+*/
+
+@font-face {
+  font-family: 'fontello';
+  src: url('../fonts/fontello.eot?9716862');
+  src: url('../fonts/fontello.eot?9716862#iefix') format('embedded-opentype'),
+       url('../fonts/fontello.woff2?9716862') format('woff2'),
+       url('../fonts/fontello.woff?9716862') format('woff'),
+       url('../fonts/fontello.ttf?9716862') format('truetype'),
+       url('../fonts/fontello.svg?9716862#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?9716862#fontello') format('svg');
+  }
+}
+*/
+
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-wordpress:before {
+    content: '\e800';
+    color #D8D8D8
+} /* '' */
+
+.icon-up-open:before {
+    content: '\e801';
+    position absolute
+    top 9px
+    left calc(100%+14px)
+    color: #222026
+    font-size: 15px
+    margin 0
+} /* '' */
+
+.icon-down-open:before {
+    content: '\e802';
+    position absolute
+    top 9px
+    left calc(100%+14px)
+    color: #222026
+    font-size: 15px
+    margin 0
+} /* '' */
