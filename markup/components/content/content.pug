@@ -1,84 +1,8 @@
--
-    var myData = new Object();
-    myData.tableRows = fillTable();
-
-    function fillTable() {
-        var rows = [];
-        for (i = 0; i < 16; i++) {
-            rows.push([
-                        getRandomCurrency(),
-                        getRandomCell2(),
-                        getRandomCell3(),
-                        getRandomCell4(),
-                        getRandomCell5(),
-                        getRandomCell67(),
-                        getRandomCell67(),
-                        getRandomCell89(),
-                        getRandomCell89()
-                    ]);
-        }
-        return rows;
-    }
-
-    function getRandomCurrency() {
-        var moneyArray = ['GBP','JPY','USD','EUR'];
-        var randomIndex = Math.floor(Math.random()*moneyArray.length);
-        var firstCurrency = moneyArray[randomIndex];
-        moneyArray.splice(randomIndex,1);
-        var secondCurrency = moneyArray[Math.floor(Math.random()*moneyArray.length)];
-        return firstCurrency+'/'+secondCurrency
-    }
-
-    function getRandomCell2() {
-        var first = Math.random().toFixed(1);
-        var second = (Math.random()+1).toFixed(1);
-        return first+' ('+second+')'
-    }
-
-    function getRandomCell3() {
-        var x = Math.floor(Math.random() * 900) + 1;
-        var x = Math.round(x/10)*10;
-        return x + ' USD'
-    }
-
-    function getRandomCell4() {
-        var x = Math.floor(Math.random() * 300) + 1
-        var x = Math.round(x/10)*10;
-        return x + ' 000 USD'
-    }
-
-    function getRandomCell5() {
-        return (Math.floor(Math.random() * 9) + 1)
-    }
-
-    function getRandomCell67() {
-        var min = -0.99;
-        var max = 0.99;
-        var rand = (min + Math.random() * (max - min)).toFixed(2).toString();
-        if (rand.charAt(rand.length-1) === '0') {
-            rand = rand.substring(0,rand.length-1);
-        }
-        if (rand == '-0.0' || rand == '0.0') {
-            rand = 0;
-        }
-        return rand
-    }
-
-    function getRandomCell89() {
-        var x = Math.floor(Math.random() * 900) + 100;
-        var x = Math.round(x/10)*10;
-        var y = Math.random().toFixed(2).toString();
-        var y = y.substring(2);
-        var result = x +','+ y;
-        return result + ' USD'
-    }
-
-
 mixin content(data)
   div.main-content
     h1.main-content__title  Торговые условия
     div.data
-        ul.tabs.tabs_rank_main#main_tabs
+        ul.tabs.tabs_rank_main#mainTabs
             li.tabs__item
                 a.tabs__link.is_active(href='#') Валютный рынок FX
             li.tabs__item
@@ -91,35 +15,35 @@ mixin content(data)
                 a.tabs__link(href='#') Форварды
             li.tabs__item
                 a.tabs__link(href='#') Swap-Free
-        ul.tabs.tabs_rank_extra#extra_tabs
+        ul.tabs.tabs_rank_extra#extraTabs
             li.tabs__item
                 a.tabs__link.is_active(href='#') Спецификации контрактов
             li.tabs__item
                 a.tabs__link(href='#') Маржинальные требования
         table.table.data__table
             thead.table__head
-                tr.table__head-row#table_head_row
-                    th.table__head-cell.sort_up
-                        span.table__head-cell-text Символ
+                tr.table__head-row#tableHeadRow
                     th.table__head-cell
-                        span.table__head-cell-text.table__head-cell-text_tooltip Спрэд, пунктов
-                    th.table__head-cell.sort_down
-                        span.table__head-cell-text Стоимость пункта в 1 лоте
+                        span.table__head-text Символ
                     th.table__head-cell
-                        span.table__head-cell-text Размер контракта, для 1-го лота
+                        span.table__head-text.table__head-text_tooltip Спрэд, пунктов
                     th.table__head-cell
-                        span.table__head-cell-text Уровни Limit&amp;Stop, пунктов
+                        span.table__head-text Стоимость пункта в 1 лоте
                     th.table__head-cell
-                        span.table__head-cell-text.table__head-cell-text_tooltip Своп long (длинных позиций), пунктов
+                        span.table__head-text Размер контракта, для 1-го лота
                     th.table__head-cell
-                        span.table__head-cell-text.table__head-cell-text_tooltip Своп short (коротких позиций), пунктов
+                        span.table__head-text Уровни Limit&amp;Stop, пунктов
                     th.table__head-cell
-                        span.table__head-cell-text.table__head-cell-text_tooltip Своп long (длинных позиций), в валюте счёта
+                        span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), пунктов
                     th.table__head-cell
-                        span.table__head-cell-text.table__head-cell-text_tooltip Своп short (коротких позиций), в валюте счёта
+                        span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), пунктов
+                    th.table__head-cell
+                        span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), в валюте счёта
+                    th.table__head-cell
+                        span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
             tbody.table__body
                 -
-                each row in myData.tableRows
+                each row in data.tableRows
                     tr.table__body-row
                         each cell, index in row
                             if (cell<0)
@@ -142,15 +66,15 @@ mixin content(data)
             span.accordeon__button.icon-up-open Архив торговых условий
             div.accordeon__item-list
                 div.accordeon__item
-                    span.accordeon__item-text Торговые условия Альфа-Форекс до 29.12.2016
+                    span.accordeon__text Торговые условия Альфа-Форекс до 29.12.2016
                 div.accordeon__item
-                    span.accordeon__item-text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
+                    span.accordeon__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
                 div.accordeon__item
-                    span.accordeon__item-text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
+                    span.accordeon__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
                 div.accordeon__item
-                    span.accordeon__item-text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
+                    span.accordeon__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
                 div.accordeon__item
-                    span.accordeon__item-text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
+                    span.accordeon__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
         .search-panel.data__search-panel
             .search-panel__search-button
             ul.search-panel__currencies
@@ -163,11 +87,11 @@ mixin content(data)
             .search-panel__volume
                 div.search-panel__volume-heading Объем
                 input.search-panel__volume-value(type="text" value="1.00")
-            .search-panel__display-options#display_options
-                lable.search-panel__display-options-item.is_active(for='volumeChoice1') В валюте
-                    input.search-panel__display-options-radio(type="radio" id="volumeChoice1" value="currency" checked)
+            .search-panel__display-options#displayOptions
+                label.search-panel__display-options-item.is_active В валюте
+                    input.search-panel__display-options-radio(type="radio" value="currency" checked="checked" name="radio")
                     span.search-panel__display-options-checkmark
-                lable.search-panel__display-options-item(for='volumeChoice2') В лотах
-                    input.search-panel__display-options-radio(type="radio" id="volumeChoice2" value="lot")
+                label.search-panel__display-options-item В лотах
+                    input.search-panel__display-options-radio(type="radio" value="lot" name="radio")
                     span.search-panel__display-options-checkmark
 

@@ -53,35 +53,35 @@ body
 
     &_rank_main
         margin-bottom 34px
-    &_rank_main ^[0]__item
-        margin-right 35px
-    &_rank_main ^[0]__link
-        border-bottom 1px solid #D3D7DA
-        border-bottom-style dashed
-        font-size 18px
-        &.is_active
+        & ^[0]__item
+            margin-right 35px
+        & ^[0]__link
+            border-bottom 1px solid #D3D7DA
+            border-bottom-style dashed
+            font-size 18px
+            &.is_active
+                border: none
+        & ^[0]__link_active
             border: none
-    &_rank_main ^[0]__link_active
-        border: none
 
     &_rank_extra
         margin-bottom 28px
-    &_rank_extra ^[0]__item:first-child ^[0]__link
-        border-radius 3px 0 0 3px
-        margin-left: 0
-    &_rank_extra ^[0]__item:last-child ^[0]__link
-        border-radius 0 3px 3px 0
-    &_rank_extra ^[0]__link
-        width: 268px
-        height: 52px
-        font-size 16px
-        border 1px solid #D3D7DA
-        display flex
-        justify-content: center
-        align-items: center
-        margin-left: -1px
-        &.is_active
-            background-color #F4F5F7
+        & ^[0]__item:first-child ^[0]__link
+            border-radius 3px 0 0 3px
+            margin-left: 0
+        & ^[0]__item:last-child ^[0]__link
+            border-radius 0 3px 3px 0
+        & ^[0]__link
+            width: 268px
+            height: 52px
+            font-size 16px
+            border 1px solid #D3D7DA
+            display flex
+            justify-content: center
+            align-items: center
+            margin-left: -1px
+            &.is_active
+                background-color #F4F5F7
 .table
     font-size: 14px
     font-weight 300
@@ -113,14 +113,22 @@ body
             position absolute
             top: 8px
             right 20px
-        &-text
-            display inline-block
-            max-width 90px
-            &_tooltip
-                text-decoration underline
-                text-decoration-color #D3D7DA
-        // &.sort_up
+        &.sort_up:after
+            border-bottom-color #F4152A
+        &.sort_up:before
+            border-top-color #B9B9BD
+        &.sort_down:after
+            border-bottom-color #B9B9BD
+        &.sort_down:before
+            border-top-color #F4152A
 
+    &__head-text
+        display inline-block
+        max-width 90px
+        user-select none
+        &_tooltip
+            text-decoration underline
+            text-decoration-color #D3D7DA
 
     &__body
         height: 50px
@@ -187,13 +195,13 @@ body
         &:first-child
             background-image embedurl("static/img/svg/pdf.svg", "utf8");
 
-        &-text
-            font-size 14px
-            text-decoration underline
-            font-weight 500
-            color #222026
-            line-height: 30px;
-            cursor pointer
+    &__text
+        font-size 14px
+        text-decoration underline
+        font-weight 500
+        color #222026
+        line-height: 30px;
+        cursor pointer
 
 .search-panel
     padding 16px
@@ -264,11 +272,8 @@ body
             padding-left 20px
             margin-bottom 10px
             user-select none
-
             &:last-child
                 margin-bottom 0
-
-
             &.is_active
                 color #222026
 
