@@ -51,30 +51,108 @@ if (tableHeadRow) {
     })
 }
 
+var initialRows = [...document.querySelectorAll('.table__body-row')];
+var tableBody = document.querySelector('.table__body');
+var columnIndex, columnData;
 function sortTable(node) {
     if (node.classList.contains('sort_up')) {
         node.classList.remove('sort_up');
         node.classList.add('sort_down');
+
+        var sortedRows = [...document.querySelectorAll('.sorted_row')];
+        sortedRows.forEach(el => {
+            el.remove();
+        });
+
+        //works for columns: 1, 2, 5, 8, 9
+        if ([0, 1, 4, 7, 8].includes(columnIndex)) {
+            columnData.sort(function (a, b) {
+                if (a[0] > b[0]) return -1;
+                if (a[0] < b[0]) return 1;
+                return 0;
+            });
+        }
+        //works for columns: 3, 4
+        if ([2, 3].includes(columnIndex)) {
+            columnData.sort(function (a, b) {
+                if (parseInt(a[0], 10) > parseInt(b[0], 10)) return -1;
+                if (parseInt(a[0], 10) < parseInt(b[0], 10)) return 1;
+                return 0;
+            });
+        }
+        //works for columns: 6, 7
+        if ([5, 6].includes(columnIndex)) {
+            columnData.sort((a, b) => b[0] - a[0]);
+        }
+
+        columnData.forEach(el => {
+            var sortedRow = initialRows[el[1]].cloneNode(true);
+            sortedRow.removeAttribute('style');
+            sortedRow.classList.add('sorted_row');
+            tableBody.appendChild(sortedRow);
+        })
+
     } else if (node.classList.contains('sort_down')) {
         node.classList.remove('sort_down');
+        var sortedRows = [...document.querySelectorAll('.sorted_row')];
+        if (sortedRows) {
+            sortedRows.forEach(el => {
+                el.remove();
+            });
+        };
+        initialRows.forEach(el => {
+            el.removeAttribute('style');
+        });
     } else {
+        initialRows.forEach(el => {
+            el.removeAttribute('style');
+        });
+        var sortedRows = [...document.querySelectorAll('.sorted_row')];
+        if (sortedRows) {
+            sortedRows.forEach(el => {
+                el.remove();
+            });
+        };
         let array = [...node.parentNode.children];
         array.forEach(el => {
             el.classList.remove('sort_up', 'sort_down');
         });
         node.classList.add('sort_up');
-        var columnIndex = array.indexOf(node);
-        var columnData = [];
+        columnIndex = array.indexOf(node);
+        columnData = [];
 
         tableData.forEach((row,index) => {
             columnData.push([row[columnIndex],index]);
         });
-        columnData.sort(function(a, b) {
-            if (a[0] < b[0]) return -1;
-            if (a[0] > b[0]) return 1;
-            return 0;
-        });
+        //works for columns: 1, 2, 5, 8, 9
+        if ([0, 1, 4, 7, 8].includes(columnIndex)) {
+            columnData.sort(function(a, b) {
+                if (a[0] < b[0]) return -1;
+                if (a[0] > b[0]) return 1;
+                return 0;
+            });
+        }
+        //works for columns: 3, 4
+        if ([2, 3].includes(columnIndex)) {
+            columnData.sort(function (a, b) {
+                if (parseInt(a[0], 10) < parseInt(b[0], 10)) return -1;
+                if (parseInt(a[0], 10) > parseInt(b[0], 10)) return 1;
+                return 0;
+            });
+        }
+        //works for columns: 6, 7
+        if ([5, 6].includes(columnIndex)) {
+            columnData.sort((a, b) => a[0] - b[0]);
+        }
 
-        console.log(columnData);
+        columnData.forEach(el => {
+            var sortedRow = initialRows[el[1]].cloneNode(true);
+            sortedRow.classList.add('sorted_row');
+            tableBody.appendChild(sortedRow);
+        })
+
+        initialRows.forEach(el => {
+            el.style.display = 'none';
+        })
     }
 }

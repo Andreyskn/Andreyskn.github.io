@@ -65,7 +65,7 @@ function getRandomCell67() {
 }
 
 function getRandomCell89() {
-    var x = Math.floor(Math.random() * 900) + 100;
+    var x = Math.floor(Math.random() * 800) + 100;
     var x = Math.round(x / 10) * 10;
     var y = Math.random().toFixed(2).toString();
     var y = y.substring(2);
