@@ -1,10 +1,11 @@
+
 mixin content(data)
   div.main-content
     h1.main-content__title  Торговые условия
     div.data
-        ul.tabs.tabs_rank_main#mainTabs
-            li.tabs__item
-                a.tabs__link.is_active(href='#') Валютный рынок FX
+        ul.tabs.tabs_rank_main
+            li.tabs__item.is_active
+                a.tabs__link(href='#') Валютный рынок FX
             li.tabs__item
                 a.tabs__link(href='#') Драгметаллы
             li.tabs__item
@@ -15,83 +16,91 @@ mixin content(data)
                 a.tabs__link(href='#') Форварды
             li.tabs__item
                 a.tabs__link(href='#') Swap-Free
-        ul.tabs.tabs_rank_extra#extraTabs
-            li.tabs__item
-                a.tabs__link.is_active(href='#') Спецификации контрактов
+        ul.tabs.tabs_rank_extra
+            li.tabs__item.is_active
+                a.tabs__link(href='#') Спецификации контрактов
             li.tabs__item
                 a.tabs__link(href='#') Маржинальные требования
-        table.table.data__table
-            thead.table__head
-                tr.table__head-row#tableHeadRow
-                    th.table__head-cell
-                        span.table__head-text Символ
-                    th.table__head-cell
-                        span.table__head-text.table__head-text_tooltip Спрэд, пунктов
-                    th.table__head-cell
-                        span.table__head-text Стоимость пункта в 1 лоте
-                    th.table__head-cell
-                        span.table__head-text Размер контракта, для 1-го лота
-                    th.table__head-cell
-                        span.table__head-text Уровни Limit&amp;Stop, пунктов
-                    th.table__head-cell
-                        span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), пунктов
-                    th.table__head-cell
-                        span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), пунктов
-                    th.table__head-cell
-                        span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), в валюте счёта
-                    th.table__head-cell
-                        span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
-            tbody.table__body
-                -
-                each row in data.tableRows
-                    tr.table__body-row
-                        each cell, index in row
-                            if (cell<0)
-                                td.table__body-cell.table__body-cell_change_fall= cell
-                            else if (cell==0 || index<5)
-                                td.table__body-cell= cell
-                            else if (index>6 && Math.round(Math.random()))
-                                td.table__body-cell.table__body-cell_change_fall= cell
-                            else
-                                td.table__body-cell.table__body-cell_change_grow= cell
+        .data__table
+            table.table
+                thead.table__head
+                    tr.table__head-row
+                        th.table__head-cell
+                            span.table__head-text Символ
+                        th.table__head-cell
+                            span.table__head-text.table__head-text_tooltip Спрэд, пунктов
+                        th.table__head-cell
+                            span.table__head-text Стоимость пункта в 1 лоте
+                        th.table__head-cell
+                            span.table__head-text Размер контракта, для 1-го лота
+                        th.table__head-cell
+                            span.table__head-text Уровни Limit&amp;Stop, пунктов
+                        th.table__head-cell
+                            span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), пунктов
+                        th.table__head-cell
+                            span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), пунктов
+                        th.table__head-cell
+                            span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), в валюте счёта
+                        th.table__head-cell
+                            span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
+                tbody.table__body#tableBody
+                    -
+                    each row in data.tableRows
+                        tr.table__body-row
+                            each cell, index in row
+                                if (cell<0)
+                                    td.table__body-cell.table__body-cell_change_fall= cell
+                                else if (cell==0 || index<5)
+                                    td.table__body-cell= cell
+                                else if (index>6 && Math.round(Math.random()))
+                                    td.table__body-cell.table__body-cell_change_fall= cell
+                                else
+                                    td.table__body-cell.table__body-cell_change_grow= cell
 
-
-        div.description.data__description
-            p.description__item  1. Альфа-Форекс оставляет за собой право корректировать величину спреда в зависимости от рыночной ситуации: в периоды повышенной волатильности и/или ограниченной ликвидности на рынке.
-            p.description__item  2. Данные спецификации действуют как для торговой платформы MetaTrader5, так и для торговой платформы MetaTrader4.
-            p.description__item  3. Данные ставок своп рассчитываются ежедневно и зависят от разницы процентных ставок государств, торгуемых валют. В ночь со среды на четверг своп списывается/начисляется в тройном размере.
-            p.description__item  4. Своп по рублевым инструментам, а также USDCAD списывается/начисляется в тройном размере с четверга на пятницу.
-            p.description__item  5. Для валютных пар с пятью знаками после запятой 1 пункт - это четвертый знак после запятой. Для валютных пар с тремя знаками после запятой 1 пункт - это второй знак после запятой.
-        div.accordeon
-            span.accordeon__button.icon-up-open Архив торговых условий
-            div.accordeon__item-list
-                div.accordeon__item
-                    span.accordeon__text Торговые условия Альфа-Форекс до 29.12.2016
-                div.accordeon__item
-                    span.accordeon__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
-                div.accordeon__item
-                    span.accordeon__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
-                div.accordeon__item
-                    span.accordeon__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
-                div.accordeon__item
-                    span.accordeon__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
-        .search-panel.data__search-panel
-            .search-panel__search-button
-            ul.search-panel__currencies
-                li.search-panel__currencies-item.is_active
-                    img(src="%=static=%img/general/ruble.png", alt="")
-                li.search-panel__currencies-item
-                    img(src="%=static=%img/general/dollar.png", alt="")
-                li.search-panel__currencies-item
-                    img(src="%=static=%img/general/euro.png", alt="")
-            .search-panel__volume
-                div.search-panel__volume-heading Объем
-                input.search-panel__volume-value(type="text" value="1.00")
-            .search-panel__display-options#displayOptions
-                label.search-panel__display-options-item.is_active В валюте
-                    input.search-panel__display-options-radio(type="radio" value="currency" checked="checked" name="radio")
-                    span.search-panel__display-options-checkmark
-                label.search-panel__display-options-item В лотах
-                    input.search-panel__display-options-radio(type="radio" value="lot" name="radio")
-                    span.search-panel__display-options-checkmark
+        .data__description
+            div.description
+                p  1. Альфа-Форекс оставляет за собой право корректировать величину спреда в зависимости от рыночной ситуации: в периоды повышенной волатильности и/или ограниченной ликвидности на рынке.
+                p  2. Данные спецификации действуют как для торговой платформы MetaTrader5, так и для торговой платформы MetaTrader4.
+                p  3. Данные ставок своп рассчитываются ежедневно и зависят от разницы процентных ставок государств, торгуемых валют. В ночь со среды на четверг своп списывается/начисляется в тройном размере.
+                p  4. Своп по рублевым инструментам, а также USDCAD списывается/начисляется в тройном размере с четверга на пятницу.
+                p  5. Для валютных пар с пятью знаками после запятой 1 пункт - это четвертый знак после запятой. Для валютных пар с тремя знаками после запятой 1 пункт - это второй знак после запятой.
+        div.accordion
+            a.accordion__button.icon-up-open#accordionButton(href='#') Архив торговых условий
+            div.accordion__item-list#accordionContent
+                div.accordion__item
+                    span.accordion__text Торговые условия Альфа-Форекс до 29.12.2016
+                div.accordion__item
+                    span.accordion__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
+                div.accordion__item
+                    span.accordion__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
+                div.accordion__item
+                    span.accordion__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
+                div.accordion__item
+                    span.accordion__text Торговые условия Альфа-Форекс с 20.03.2015 по 30.03.2015
+        .data__search-panel
+            .search-panel
+                .search-panel__search-button
+                    a.search-button(href="#")
+                ul.search-panel__currencies
+                    li.search-panel__currencies-item.is_active
+                        a.button#showRuble(href='#')
+                            img.button__image(src="%=static=%img/general/ruble.png", alt="")
+                    li.search-panel__currencies-item
+                        a.button#showDollar(href='#')
+                            img.button__image(src="%=static=%img/general/dollar.png", alt="")
+                    li.search-panel__currencies-item
+                        a.button#showEuro(href='#')
+                            img.button__image(src="%=static=%img/general/euro.png", alt="")
+                .search-panel__volume
+                    div.search-panel__volume-heading Объем
+                    input.search-panel__volume-value(type="text" value="1.00")
+                .search-panel__display-options
+                    .search-panel__display-options-item.is_active
+                        label.radio-button В валюте
+                            input.radio-button__input(type="radio" value="currency" checked="checked" name="radio")
+                            span.radio-button__checkmark
+                    .search-panel__display-options-item
+                        label.radio-button В лотах
+                            input.radio-button__input(type="radio" value="lot" name="radio")
+                            span.radio-button__checkmark
 

@@ -34,7 +34,6 @@ body
         position absolute
         right calc(100%+20px)
         top 0
-        border-radius 5px
         box-shadow 0 2px 6px 0 rgba(34,32,38,0.2)
 
 .tabs
@@ -44,28 +43,28 @@ body
 
     &__item
         display inline-block
-
-    &__link
-        text-decoration none
         color #222026
         &.is_active
             color #697076
+    &__link
+        text-decoration none
+        color inherit
 
     &_rank_main
         margin-bottom 34px
         & ^[0]__item
             margin-right 35px
+            &.is_active ^[0]__link
+                border none
         & ^[0]__link
             border-bottom 1px solid #D3D7DA
             border-bottom-style dashed
             font-size 18px
-            &.is_active
-                border: none
-        & ^[0]__link_active
-            border: none
 
     &_rank_extra
         margin-bottom 28px
+        & ^[0]__item.is_active ^[0]__link
+            background-color #F4F5F7
         & ^[0]__item:first-child ^[0]__link
             border-radius 3px 0 0 3px
             margin-left: 0
@@ -80,8 +79,7 @@ body
             justify-content: center
             align-items: center
             margin-left: -1px
-            &.is_active
-                background-color #F4F5F7
+
 .table
     font-size: 14px
     font-weight 300
@@ -159,13 +157,13 @@ body
             background-color #F4F5F7
 
 .description
-    &__item
-        font-size 13px
-        line-height 18px
-        color #697076
-        margin 0
+    font-size: 13px;
+    line-height: 18px;
+    color: #697076;
+    &>p
+        margin: 0;
 
-.accordeon
+.accordion
 
     &__button
         display inline-block
@@ -178,11 +176,17 @@ body
         line-height 32px
         margin-bottom 35px
         position relative
-        cursor pointer
+        text-decoration none
+        transition all 0.3s
+        &.collapsed
+            margin-bottom 0
 
     &__item-list
         display flex
         flex-wrap wrap
+        transition all .3s
+        &_is_closed
+            max-height 0 !important
 
     &__item
         flex 1 1 50%
@@ -209,30 +213,21 @@ body
     display flex
     flex-wrap wrap
     justify-content center
+    border-radius 5px
 
     &__search-button
         height 52px
         width 52px
-        border 1px solid #D3D7DA
-        border-radius 3px
-        background-image embedurl("static/img/svg/search.svg", "utf8");
-        background-repeat no-repeat
-        background-position 50% 50%
-        cursor pointer
 
     &__currencies
         padding 0
         margin 16px 0
         &-item
-            margin 0 auto
-            display flex
+            display block
             width 52px
             height 52px
             border 1px solid #D3D7DA
-            justify-content center
-            align-items center
-            margin-top -1px;
-            cursor pointer
+            margin-top -1px
             &.is_active
                 background #F4F5F7
             &:first-child
@@ -254,41 +249,58 @@ body
             border-radius 3px
 
     &__display-options
-        font-size 0
-
-        &-radio
-            position: absolute
-            opacity: 0
-            cursor: pointer
-
         &-item
-            font-size 13px
-            font-weight 500
-            color #697076
-            vertical-align middle
-            cursor pointer
-            display block
-            position: relative
-            padding-left 20px
             margin-bottom 10px
-            user-select none
-            &:last-child
-                margin-bottom 0
+            display block
+            color #697076
+            position: relative
             &.is_active
                 color #222026
+            &:last-child
+                margin-bottom 0
 
-        &-checkmark
-            position absolute
-            top calc(50% - 6px)
-            left 0
-            height: 12px
-            width: 12px
-            border 1px solid #D3D7DA
-            border-radius 50%
+.search-button
+    border 1px solid #D3D7DA
+    border-radius 3px
+    background-image embedurl("static/img/svg/search.svg", "utf8");
+    background-repeat no-repeat
+    background-position 50% 50%
+    display block
+    height 100%
 
-            ^[-1]-radio:checked ~ &
-                background-color #69862D
-                border none
+.button
+    display flex
+    justify-content center
+    align-items center
+    height 100%
+
+.radio-button
+    font-size 13px
+    font-weight 500
+    vertical-align middle
+    cursor pointer
+    padding-left 20px
+    user-select none
+    color inherit
+
+    &__input
+        position: absolute
+        opacity: 0
+        cursor: pointer
+
+    &__checkmark
+        position absolute
+        top calc(50% - 6px)
+        left 0
+        height: 12px
+        width: 12px
+        border 1px solid #D3D7DA
+        border-radius 50%
+
+        ^[-1]__input:checked ~ &
+            background-color #69862D
+            border none
+
 
 .page__social
     width 50px

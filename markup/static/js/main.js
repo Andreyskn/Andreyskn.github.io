@@ -1,82 +1,140 @@
 'use strict';
-import {tableData} from 'static/js/tableData';
 
-var displayOptions = document.getElementById('displayOptions');
-if (displayOptions) {
-    displayOptions.addEventListener('click', function() {
-        if (event.target.classList.contains('search-panel__display-options-item') && !event.target.classList.contains('is_active')) {
-            let array = [...displayOptions.children];
-            array.forEach(element => {
-                element.classList.remove('is_active');
-            });
-            event.target.classList.add('is_active');
-        }
+function switchActive(container, setActive) {
+    let array = [...container.children];
+    array.forEach(element => {
+        element.classList.remove('is_active');
     });
+    setActive.classList.add('is_active');
 }
 
-var mainTabs = document.getElementById('mainTabs');
-if (mainTabs) {
-    mainTabs.addEventListener('click', function() {
-        if (event.target.classList.contains('tabs__link') && !event.target.classList.contains('is_active')) {
-            handleTabsActive(mainTabs);
-        }
+let displayOptions = [...document.getElementsByClassName('radio-button')];
+if (displayOptions.length) {
+    displayOptions.forEach(el => {
+        el.addEventListener('click', e => {
+            if (!e.currentTarget.parentNode.classList.contains('is_active')) {
+                switchActive(e.currentTarget.parentNode.parentNode, e.currentTarget.parentNode);
+            }
+        })
     })
 }
 
-var extraTabs = document.getElementById('extraTabs');
-if (extraTabs) {
-    extraTabs.addEventListener('click', function () {
-        if (event.target.classList.contains('tabs__link') && !event.target.classList.contains('is_active')) {
-            handleTabsActive(extraTabs);
-        }
+var tableBody = document.getElementById('tableBody');
+var buttons = [...document.getElementsByClassName('button')];
+if (buttons.length) {
+    buttons.forEach(button => {
+        button.addEventListener('click', e => {
+            e.preventDefault();
+            if (!e.currentTarget.parentNode.classList.contains('is_active')) {
+                switchActive(e.currentTarget.parentNode.parentNode, e.currentTarget.parentNode);
+                if (tableBody) {
+                    showRows(e.currentTarget.id);
+                }
+                if (document.querySelector('[class*="sort_"]')) {
+                    sortTable(document.querySelector('[class*="sort_"]'));
+                }
+            }
+        })
     })
 }
 
-function handleTabsActive(tabsId) {
-    let array = [...tabsId.children];
-    array.forEach(el => {
-        el.querySelector('.tabs__link').classList.remove('is_active');
-    });
-    event.target.classList.add('is_active');
+function showRows(buttonId) {
+    if (document.getElementById('newTable')) {
+        document.getElementById('newTable').remove();
+    }
+    var moneyArray = [...tableBody.querySelectorAll('.table__body-cell:first-child')];
+    var rows = [...tableBody.getElementsByClassName('table__body-row')];
+    var newTable = document.createElement('tbody');
+    newTable.setAttribute('id','newTable');
+    newTable.classList.add('new_table');
+    if (buttonId === 'showDollar') {
+        moneyArray.forEach((el, index) => {
+            if (el.textContent.includes('USD')) {
+                var rowClone = rows[index].cloneNode(true);
+                newTable.appendChild(rowClone);
+            }
+        })
+        tableBody.style.display = 'none';
+        document.querySelector('.table').appendChild(newTable);
+    } else if (buttonId === 'showEuro') {
+        moneyArray.forEach((el, index) => {
+            if (el.textContent.includes('EUR')) {
+                var rowClone = rows[index].cloneNode(true);
+                newTable.appendChild(rowClone);
+            }
+        })
+        tableBody.style.display = 'none';
+        document.querySelector('.table').appendChild(newTable);
+    } else {
+        tableBody.removeAttribute('style');
+    }
 }
 
-var tableHeadRow = document.getElementById('tableHeadRow');
-if (tableHeadRow) {
-    tableHeadRow.addEventListener('click', function () {
-        if (event.target.classList.contains('table__head-cell')) {
-            sortTable(event.target);
-        } else if (event.target.parentNode.classList.contains('table__head-cell')) {
-            sortTable(event.target.parentNode);
-        }
+let tabs = [...document.getElementsByClassName('tabs__link')];
+if (tabs.length) {
+    tabs.forEach(tab => {
+        tab.addEventListener('click', e => {
+            e.preventDefault();
+            if (!e.currentTarget.parentNode.classList.contains('is_active')) {
+                switchActive(e.currentTarget.parentNode.parentNode, e.currentTarget.parentNode);
+            }
+        })
     })
 }
 
-var initialRows = [...document.querySelectorAll('.table__body-row')];
-var tableBody = document.querySelector('.table__body');
-var columnIndex, columnData;
+let tableColumns = [...document.getElementsByClassName('table__head-cell')];
+var tableHeadCells;
+if (tableColumns.length) {
+    tableColumns.forEach(column => {
+        column.addEventListener('click', e => {
+            if (e.currentTarget.classList.contains('sort_up')) {
+                e.currentTarget.classList.remove('sort_up');
+                e.currentTarget.classList.add('sort_down');
+                sortTable(e.currentTarget);
+            } else if (e.currentTarget.classList.contains('sort_down')) {
+                e.currentTarget.classList.remove('sort_down');
+                resetSort();
+            } else {
+                tableHeadCells = [...e.currentTarget.parentNode.children];
+                tableHeadCells.forEach(el => {
+                    el.classList.remove('sort_up', 'sort_down');
+                });
+                e.currentTarget.classList.add('sort_up');
+                sortTable(e.currentTarget);
+            }
+        })
+    })
+}
+
+var columnIndex, columnData, tableToSort, rowsToSort;
 function sortTable(node) {
-    if (node.classList.contains('sort_up')) {
-        node.classList.remove('sort_up');
-        node.classList.add('sort_down');
+    tableToSort = document.querySelector('tbody:not([style])');
+    rowsToSort = [...tableToSort.querySelectorAll('tr:not([class*="sorted"])')];
+    if (node.classList.contains('sort_down')) {
 
         var sortedRows = [...document.querySelectorAll('.sorted_row')];
         sortedRows.forEach(el => {
             el.remove();
         });
 
+        columnIndex = tableHeadCells.indexOf(node);
+        columnData = [];
+
+        rowsToSort.forEach((row, index) => {
+            columnData.push([row.querySelectorAll('.table__body-cell')[columnIndex].textContent, index]);
+        });
+
         //works for columns: 1, 2, 5, 8, 9
         if ([0, 1, 4, 7, 8].includes(columnIndex)) {
             columnData.sort(function (a, b) {
-                if (a[0] > b[0]) return -1;
-                if (a[0] < b[0]) return 1;
+                return a[0] > b[0] ? -1 : 1;
                 return 0;
             });
         }
         //works for columns: 3, 4
         if ([2, 3].includes(columnIndex)) {
             columnData.sort(function (a, b) {
-                if (parseInt(a[0], 10) > parseInt(b[0], 10)) return -1;
-                if (parseInt(a[0], 10) < parseInt(b[0], 10)) return 1;
+                return (parseInt(a[0], 10) < parseInt(b[0], 10)) ? 1 : -1;
                 return 0;
             });
         }
@@ -86,57 +144,41 @@ function sortTable(node) {
         }
 
         columnData.forEach(el => {
-            var sortedRow = initialRows[el[1]].cloneNode(true);
+            var sortedRow = rowsToSort[el[1]].cloneNode(true);
             sortedRow.removeAttribute('style');
             sortedRow.classList.add('sorted_row');
-            tableBody.appendChild(sortedRow);
+            tableToSort.appendChild(sortedRow);
         })
 
-    } else if (node.classList.contains('sort_down')) {
-        node.classList.remove('sort_down');
+    } else if (node.classList.contains('sort_up')) {
+        rowsToSort.forEach(el => {
+            el.removeAttribute('style');
+        });
         var sortedRows = [...document.querySelectorAll('.sorted_row')];
-        if (sortedRows) {
+        if (sortedRows.length) {
             sortedRows.forEach(el => {
                 el.remove();
             });
         };
-        initialRows.forEach(el => {
-            el.removeAttribute('style');
-        });
-    } else {
-        initialRows.forEach(el => {
-            el.removeAttribute('style');
-        });
-        var sortedRows = [...document.querySelectorAll('.sorted_row')];
-        if (sortedRows) {
-            sortedRows.forEach(el => {
-                el.remove();
-            });
-        };
-        let array = [...node.parentNode.children];
-        array.forEach(el => {
-            el.classList.remove('sort_up', 'sort_down');
-        });
-        node.classList.add('sort_up');
-        columnIndex = array.indexOf(node);
+
+        columnIndex = tableHeadCells.indexOf(node);
         columnData = [];
 
-        tableData.forEach((row,index) => {
-            columnData.push([row[columnIndex],index]);
+        rowsToSort.forEach((row, index) => {
+            columnData.push([row.querySelectorAll('.table__body-cell')[columnIndex].textContent, index]);
         });
+
         //works for columns: 1, 2, 5, 8, 9
         if ([0, 1, 4, 7, 8].includes(columnIndex)) {
-            columnData.sort(function(a, b) {
-                if (a[0] < b[0]) return -1;
-                if (a[0] > b[0]) return 1;
+            columnData.sort(function (a, b) {
+                return a[0] > b[0] ? 1 : -1;
                 return 0;
             });
         }
         //works for columns: 3, 4
         if ([2, 3].includes(columnIndex)) {
             columnData.sort(function (a, b) {
-                if (parseInt(a[0], 10) < parseInt(b[0], 10)) return -1;
-                if (parseInt(a[0], 10) > parseInt(b[0], 10)) return 1;
+                return (parseInt(a[0], 10) < parseInt(b[0], 10)) ? -1 : 1;
                 return 0;
             });
         }
@@ -146,13 +188,50 @@ function sortTable(node) {
         }
 
         columnData.forEach(el => {
-            var sortedRow = initialRows[el[1]].cloneNode(true);
+            var sortedRow = rowsToSort[el[1]].cloneNode(true);
             sortedRow.classList.add('sorted_row');
-            tableBody.appendChild(sortedRow);
+            tableToSort.appendChild(sortedRow);
         })
 
-        initialRows.forEach(el => {
+        rowsToSort.forEach(el => {
             el.style.display = 'none';
         })
     }
+}
+
+function resetSort() {
+    var sortedRows = [...document.querySelectorAll('.sorted_row')];
+    if (sortedRows.length) {
+        sortedRows.forEach(el => {
+            el.remove();
+        });
+    };
+    rowsToSort.forEach(el => {
+        el.removeAttribute('style');
+    });
+}
+
+var accordionButton = document.getElementById('accordionButton');
+var accordionContent = document.getElementById('accordionContent');
+if (accordionButton && accordionContent) {
+    var contentHeight = window.getComputedStyle(accordionContent).height;
+    accordionButton.addEventListener('click', e => {
+        e.preventDefault();
+        if (!e.currentTarget.classList.contains('collapsed')) {
+            accordionContent.style.opacity = '0';
+            accordionContent.style.maxHeight = window.getComputedStyle(accordionContent).height;
+            setTimeout(() => {
+                accordionContent.classList.add('accordion__item-list_is_closed');
+                accordionButton.classList.remove('icon-up-open');
+                accordionButton.classList.add('icon-down-open', 'collapsed');
+            }, 300);
+        } else {
+            accordionContent.classList.remove('accordion__item-list_is_closed');
+            accordionButton.classList.remove('icon-down-open', 'collapsed');
+            accordionButton.classList.add('icon-up-open');
+            setTimeout(() => {
+                accordionContent.style.opacity = '1';
+            }, 300);
+        }
+    })
 }
