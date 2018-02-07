@@ -28,15 +28,26 @@ body
         margin-bottom 32px
         max-height 680px
         overflow auto
-        // box-sizing content-box
 
         &_narrow
-            // width 1069px
             padding-right 10px
 
         &-wrapper
             padding-top 100px
             position relative
+            &.blur_top:before
+                content ''
+                position absolute
+                width 100%
+                height 50px
+                background linear-gradient(0deg, rgba(255,255,255,0) 0%, #FFFFFF 100%)
+            &.blur_bottom:after
+                content ''
+                position absolute
+                width 100%
+                height 50px
+                bottom 0
+                background linear-gradient(0deg, #FFFFFF 0%, rgba(255,255,255,0) 100%)
 
         &::-webkit-scrollbar
             width 6px

@@ -39,6 +39,32 @@ if (buttons.length) {
     })
 }
 
+function blurEdges(el) {
+    var wrapper = document.querySelector('.data__table-wrapper');
+    if (!el.classList.contains('data__table_narrow')) {
+        var maxScroll = parseInt(window.getComputedStyle(wrapper).height) - 130;
+        if (el.scrollTop > 0) {
+            wrapper.classList.add('blur_top', 'blur_bottom');
+        }
+        if (el.scrollTop === 0) {
+            wrapper.classList.remove('blur_top');
+            wrapper.classList.add('blur_bottom');
+        }
+        if (el.scrollTop > maxScroll) {
+            wrapper.classList.remove('blur_bottom');
+        }
+    }
+}
+
+var tableContainer = document.querySelector('.data__table');
+if (tableContainer) {
+    blurEdges(tableContainer);
+    tableContainer.addEventListener('scroll', e => {
+        blurEdges(e.currentTarget);
+    })
+}
+
+
 function resizeTableContainer() {
     var tableHeight = window.getComputedStyle(document.querySelector('table')).height;
     var containerMaxHeight = window.getComputedStyle(document.querySelector('.data__table')).maxHeight
