@@ -23,8 +23,26 @@ body
     position relative
 
     &__table
-        width 100%
+        width 1080px
+        padding-right 4px
         margin-bottom 32px
+        max-height 680px
+        overflow auto
+        // box-sizing content-box
+
+        &_narrow
+            // width 1069px
+            padding-right 10px
+
+        &-wrapper
+            padding-top 100px
+            position relative
+
+        &::-webkit-scrollbar
+            width 6px
+        &::-webkit-scrollbar-thumb
+            background-color #85858E
+            border-radius 3px
 
     &__description
         margin-bottom 40px
@@ -83,16 +101,20 @@ body
 .table
     font-size: 14px
     font-weight 300
+    width 1070px
     &__head-row
-        height: 100px
+        width 1071px
+        position absolute
+        top 0
+
     &__head-cell
         position relative
         line-height 18px
         font-weight: 300
-        min-width 100px
         border 1px solid #85858E
-        padding 18px 10px
         cursor pointer
+        height 100px
+        width calc(930px / 8)
         &:first-child
             width 140px
         &:before
@@ -139,6 +161,7 @@ body
         padding 0 16px
         text-align center
         font-weight 500
+        width 116px
 
         &_change_grow
             color #318624
@@ -146,6 +169,7 @@ body
             color #E2322A
         &:first-child
             text-align left
+            width 140px
         &:nth-child(n+3):nth-child(-n+5)
             font-weight 300
 

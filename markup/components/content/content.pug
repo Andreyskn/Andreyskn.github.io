@@ -21,41 +21,42 @@ mixin content(data)
                 a.tabs__link(href='#') Спецификации контрактов
             li.tabs__item
                 a.tabs__link(href='#') Маржинальные требования
-        .data__table
-            table.table
-                thead.table__head
-                    tr.table__head-row
-                        th.table__head-cell
-                            span.table__head-text Символ
-                        th.table__head-cell
-                            span.table__head-text.table__head-text_tooltip Спрэд, пунктов
-                        th.table__head-cell
-                            span.table__head-text Стоимость пункта в 1 лоте
-                        th.table__head-cell
-                            span.table__head-text Размер контракта, для 1-го лота
-                        th.table__head-cell
-                            span.table__head-text Уровни Limit&amp;Stop, пунктов
-                        th.table__head-cell
-                            span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), пунктов
-                        th.table__head-cell
-                            span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), пунктов
-                        th.table__head-cell
-                            span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), в валюте счёта
-                        th.table__head-cell
-                            span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
-                tbody.table__body#tableBody
-                    -
-                    each row in data.tableRows
-                        tr.table__body-row
-                            each cell, index in row
-                                if (cell<0)
-                                    td.table__body-cell.table__body-cell_change_fall= cell
-                                else if (cell==0 || index<5)
-                                    td.table__body-cell= cell
-                                else if (index>6 && Math.round(Math.random()))
-                                    td.table__body-cell.table__body-cell_change_fall= cell
-                                else
-                                    td.table__body-cell.table__body-cell_change_grow= cell
+        .data__table-wrapper
+            .data__table
+                table.table
+                    thead.table__head
+                        tr.table__head-row
+                            th.table__head-cell
+                                span.table__head-text Символ
+                            th.table__head-cell
+                                span.table__head-text.table__head-text_tooltip Спрэд, пунктов
+                            th.table__head-cell
+                                span.table__head-text Стоимость пункта в 1 лоте
+                            th.table__head-cell
+                                span.table__head-text Размер контракта, для 1-го лота
+                            th.table__head-cell
+                                span.table__head-text Уровни Limit&amp;Stop, пунктов
+                            th.table__head-cell
+                                span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), пунктов
+                            th.table__head-cell
+                                span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), пунктов
+                            th.table__head-cell
+                                span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), в валюте счёта
+                            th.table__head-cell
+                                span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
+                    tbody.table__body#tableBody
+                        -
+                        each row in data.tableRows
+                            tr.table__body-row
+                                each cell, index in row
+                                    if (cell<0)
+                                        td.table__body-cell.table__body-cell_change_fall= cell
+                                    else if (cell==0 || index<5)
+                                        td.table__body-cell= cell
+                                    else if (index>6 && Math.round(Math.random()))
+                                        td.table__body-cell.table__body-cell_change_fall= cell
+                                    else
+                                        td.table__body-cell.table__body-cell_change_grow= cell
 
         .data__description
             div.description
