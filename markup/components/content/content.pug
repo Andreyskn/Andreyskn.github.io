@@ -81,17 +81,23 @@ mixin content(data)
         .data__search-panel
             .search-panel
                 .search-panel__search-button
-                    a.search-button(href="#")
+                    a.search-button#searchButton(href="#")
                 ul.search-panel__currencies
-                    li.search-panel__currencies-item.is_active
-                        a.button#showRuble(href='#')
-                            img.button__image(src="%=static=%img/general/ruble.png", alt="")
                     li.search-panel__currencies-item
-                        a.button#showDollar(href='#')
-                            img.button__image(src="%=static=%img/general/dollar.png", alt="")
+                        label.checkbox(data-value='RUB')
+                            input.checkbox__input(type='checkbox')
+                            .checkbox__image
+                                img(src="%=static=%img/general/ruble.png", alt="")
                     li.search-panel__currencies-item
-                        a.button#showEuro(href='#')
-                            img.button__image(src="%=static=%img/general/euro.png", alt="")
+                        label.checkbox(data-value='USD')
+                            input.checkbox__input(type='checkbox')
+                            .checkbox__image
+                                img(src="%=static=%img/general/dollar.png", alt="")
+                    li.search-panel__currencies-item
+                        label.checkbox(data-value='EUR')
+                            input.checkbox__input(type='checkbox')
+                            .checkbox__image
+                                img(src="%=static=%img/general/euro.png", alt="")
                 .search-panel__volume
                     div.search-panel__volume-heading Объем
                     input.search-panel__volume-value(type="text" value="1.00")
@@ -104,4 +110,9 @@ mixin content(data)
                         label.radio-button В лотах
                             input.radio-button__input(type="radio" value="lot" name="radio")
                             span.radio-button__checkmark
-
+                .search-panel__search-bar.search-panel__search-bar_hidden#searchBar
+                    .search-bar
+                        .search-bar__inner
+                            input.search-bar__input(type='text' placeholder='Поиск')
+                            button.button(type='button')
+                                img.button__image(src="%=static=%img/general/search.png", alt="")

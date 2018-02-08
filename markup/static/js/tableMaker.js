@@ -1,10 +1,11 @@
 // var content = new Object();
-var myData = new Object();
-myData.tableRows = fillTable();
+// var myData = new Object();
+// myData.tableRows = fillTable();
+// tableRows = [];
 
 function fillTable() {
     var rows = [];
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < 100; i++) {
         rows.push([
             getRandomCurrency(),
             getRandomCell2(),
@@ -16,12 +17,14 @@ function fillTable() {
             getRandomCell89(),
             getRandomCell89()
         ]);
+
     }
-    return rows;
+    // return rows;
+    console.log(rows);
 }
 
 function getRandomCurrency() {
-    var moneyArray = ['GBP', 'JPY', 'USD', 'EUR'];
+    var moneyArray = ['RUB', 'JPY', 'USD', 'EUR'];
     var randomIndex = Math.floor(Math.random() * moneyArray.length);
     var firstCurrency = moneyArray[randomIndex];
     moneyArray.splice(randomIndex, 1);
@@ -37,13 +40,13 @@ function getRandomCell2() {
 
 function getRandomCell3() {
     var x = Math.floor(Math.random() * 900) + 1;
-    var x = Math.round(x / 10) * 10;
+    x = Math.round(x / 10) * 10;
     return x + ' USD'
 }
 
 function getRandomCell4() {
     var x = Math.floor(Math.random() * 300) + 1
-    var x = Math.round(x / 10) * 10;
+    x = Math.round(x / 10) * 10;
     return x + ' 000 USD'
 }
 
@@ -66,11 +69,11 @@ function getRandomCell67() {
 
 function getRandomCell89() {
     var x = Math.floor(Math.random() * 800) + 100;
-    var x = Math.round(x / 10) * 10;
+    x = Math.round(x / 10) * 10;
     var y = Math.random().toFixed(2).toString();
-    var y = y.substring(2);
+    y = y.substring(2);
     var result = x + ',' + y;
     return result + ' USD'
 }
 
-console.log(myData.tableRows);
+// console.log(myData.tableRows);

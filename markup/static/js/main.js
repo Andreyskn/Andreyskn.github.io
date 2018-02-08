@@ -1,4 +1,5 @@
 'use strict';
+import { tableData } from './tableData';
 
 function switchActive(container, setActive) {
     let array = [...container.children];
@@ -20,37 +21,64 @@ if (displayOptions.length) {
 }
 
 var tableBody = document.getElementById('tableBody');
-var buttons = [...document.getElementsByClassName('button')];
-if (buttons.length) {
-    buttons.forEach(button => {
-        button.addEventListener('click', e => {
-            e.preventDefault();
-            if (!e.currentTarget.parentNode.classList.contains('is_active')) {
-                switchActive(e.currentTarget.parentNode.parentNode, e.currentTarget.parentNode);
-                if (tableBody) {
-                    showRows(e.currentTarget.id);
-                    resizeTableContainer();
-                }
-                if (document.querySelector('[class*="sort_"]')) {
-                    sortTable(document.querySelector('[class*="sort_"]'));
-                }
+var checks = [...document.getElementsByClassName('checkbox')];
+var checksArr = [];
+if (checks.length && tableBody) {
+    checks.forEach(checkbox => {
+        checkbox.addEventListener('change', e => {
+            if (e.currentTarget.getElementsByClassName('checkbox__input')[0].checked) {
+                checksArr.push(e.currentTarget.getAttribute('data-value'));
+                showRows(checksArr);
+            } else {
+                checksArr = checksArr.filter(el => el !== e.currentTarget.getAttribute('data-value'));
+                showRows(checksArr);
             }
         })
     })
 }
 
-function blurEdges(el) {
+var sortedArr = [];
+function showRows(checksArr) {
+    var columnToSort = document.querySelector('[class*="sort_"]');
+    tableBody.innerHTML = '';
+
+    if (checksArr.length) {
+        sortedArr = tableData.filter(row => checksArr.some(el => row[0].includes(el)));
+        columnToSort ? sortTable(columnToSort, sortedArr) : appendRows(sortedArr);
+    } else {
+        sortedArr = [];
+        columnToSort ? sortTable(columnToSort) : appendRows(tableData);
+    }
+}
+
+function appendRows(arr) {
+    arr.map(row => {
+        var tr = document.createElement('tr');
+        tr.classList.add('table__body-row');
+
+        row.map(cell => {
+            var td = document.createElement('td');
+            td.classList.add('table__body-cell');
+            td.append(cell);
+            tr.append(td);
+        })
+        tableBody.append(tr);
+    })
+}
+
+function blurEdges(tableContainer) {
     var wrapper = document.querySelector('.data__table-wrapper');
-    if (!el.classList.contains('data__table_narrow')) {
-        var maxScroll = parseInt(window.getComputedStyle(wrapper).height) - 130;
-        if (el.scrollTop > 0) {
+    var tableHeight = parseInt(window.getComputedStyle(document.querySelector('table')).height)
+    if (!tableContainer.classList.contains('data__table_narrow')) {
+        var maxScroll = tableHeight - parseInt(window.getComputedStyle(tableContainer).height) - 30;
+        if (tableContainer.scrollTop > 0) {
             wrapper.classList.add('blur_top', 'blur_bottom');
         }
-        if (el.scrollTop === 0) {
+        if (tableContainer.scrollTop === 0) {
             wrapper.classList.remove('blur_top');
             wrapper.classList.add('blur_bottom');
         }
-        if (el.scrollTop > maxScroll) {
+        if (tableContainer.scrollTop > maxScroll) {
             wrapper.classList.remove('blur_bottom');
         }
     }
@@ -64,7 +92,6 @@ if (tableContainer) {
     })
 }
 
-
 function resizeTableContainer() {
     var tableHeight = window.getComputedStyle(document.querySelector('table')).height;
     var containerMaxHeight = window.getComputedStyle(document.querySelector('.data__table')).maxHeight
@@ -72,38 +99,6 @@ function resizeTableContainer() {
         document.querySelector('.data__table').classList.add('data__table_narrow');
     } else {
         document.querySelector('.data__table').classList.remove('data__table_narrow');
-    }
-}
-
-function showRows(buttonId) {
-    if (document.getElementById('newTable')) {
-        document.getElementById('newTable').remove();
-    }
-    var moneyArray = [...tableBody.querySelectorAll('.table__body-cell:first-child')];
-    var rows = [...tableBody.getElementsByClassName('table__body-row')];
-    var newTable = document.createElement('tbody');
-    newTable.setAttribute('id','newTable');
-    newTable.classList.add('new_table');
-    if (buttonId === 'showDollar') {
-        moneyArray.forEach((el, index) => {
-            if (el.textContent.includes('USD')) {
-                var rowClone = rows[index].cloneNode(true);
-                newTable.appendChild(rowClone);
-            }
-        })
-        tableBody.style.display = 'none';
-        document.querySelector('.table').appendChild(newTable);
-    } else if (buttonId === 'showEuro') {
-        moneyArray.forEach((el, index) => {
-            if (el.textContent.includes('EUR')) {
-                var rowClone = rows[index].cloneNode(true);
-                newTable.appendChild(rowClone);
-            }
-        })
-        tableBody.style.display = 'none';
-        document.querySelector('.table').appendChild(newTable);
-    } else {
-        tableBody.removeAttribute('style');
     }
 }
 
@@ -130,7 +125,7 @@ if (tableColumns.length) {
                 sortTable(e.currentTarget);
             } else if (e.currentTarget.classList.contains('sort_down')) {
                 e.currentTarget.classList.remove('sort_down');
-                resetSort();
+                sortTable(e.currentTarget);
             } else {
                 tableHeadCells = [...e.currentTarget.parentNode.children];
                 tableHeadCells.forEach(el => {
@@ -143,109 +138,65 @@ if (tableColumns.length) {
     })
 }
 
-var columnIndex, columnData, tableToSort, rowsToSort;
-function sortTable(node) {
-    tableToSort = document.querySelector('tbody:not([style])');
-    rowsToSort = [...tableToSort.querySelectorAll('tr:not([class*="sorted"])')];
-    if (node.classList.contains('sort_down')) {
+function sortTable(columnToSort, arrayToSort = tableData) {
 
-        var sortedRows = [...document.querySelectorAll('.sorted_row')];
-        sortedRows.forEach(el => {
-            el.remove();
-        });
+    var columnId = tableHeadCells.indexOf(columnToSort);
+    var tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
 
-        columnIndex = tableHeadCells.indexOf(node);
-        columnData = [];
+    if (columnToSort.classList.contains('sort_down')) {
 
-        rowsToSort.forEach((row, index) => {
-            columnData.push([row.querySelectorAll('.table__body-cell')[columnIndex].textContent, index]);
-        });
+        var copyData = arrayToSort.slice();
 
         //works for columns: 1, 2, 5, 8, 9
-        if ([0, 1, 4, 7, 8].includes(columnIndex)) {
-            columnData.sort(function (a, b) {
-                return a[0] > b[0] ? -1 : 1;
+        if ([0, 1, 4, 7, 8].includes(columnId)) {
+            copyData.sort(function (a, b) {
+                return a[columnId] > b[columnId] ? -1 : 1;
                 return 0;
             });
         }
         //works for columns: 3, 4
-        if ([2, 3].includes(columnIndex)) {
-            columnData.sort(function (a, b) {
-                return (parseInt(a[0], 10) < parseInt(b[0], 10)) ? 1 : -1;
+        if ([2, 3].includes(columnId)) {
+            copyData.sort(function (a, b) {
+                return (parseInt(a[columnId], 10) < parseInt(b[columnId], 10)) ? 1 : -1;
                 return 0;
             });
         }
         //works for columns: 6, 7
-        if ([5, 6].includes(columnIndex)) {
-            columnData.sort((a, b) => b[0] - a[0]);
+        if ([5, 6].includes(columnId)) {
+            copyData.sort((a, b) => b[columnId] - a[columnId]);
         }
 
-        columnData.forEach(el => {
-            var sortedRow = rowsToSort[el[1]].cloneNode(true);
-            sortedRow.removeAttribute('style');
-            sortedRow.classList.add('sorted_row');
-            tableToSort.appendChild(sortedRow);
-        })
+        appendRows(copyData);
 
-    } else if (node.classList.contains('sort_up')) {
-        rowsToSort.forEach(el => {
-            el.removeAttribute('style');
-        });
-        var sortedRows = [...document.querySelectorAll('.sorted_row')];
-        if (sortedRows.length) {
-            sortedRows.forEach(el => {
-                el.remove();
-            });
-        };
+    } else if (columnToSort.classList.contains('sort_up')) {
 
-        columnIndex = tableHeadCells.indexOf(node);
-        columnData = [];
-
-        rowsToSort.forEach((row, index) => {
-            columnData.push([row.querySelectorAll('.table__body-cell')[columnIndex].textContent, index]);
-        });
+        var copyData = arrayToSort.slice();
 
         //works for columns: 1, 2, 5, 8, 9
-        if ([0, 1, 4, 7, 8].includes(columnIndex)) {
-            columnData.sort(function (a, b) {
-                return a[0] > b[0] ? 1 : -1;
+        if ([0, 1, 4, 7, 8].includes(columnId)) {
+            copyData.sort(function (a, b) {
+                return a[columnId] > b[columnId] ? 1 : -1;
                 return 0;
             });
         }
         //works for columns: 3, 4
-        if ([2, 3].includes(columnIndex)) {
-            columnData.sort(function (a, b) {
-                return (parseInt(a[0], 10) < parseInt(b[0], 10)) ? -1 : 1;
+        if ([2, 3].includes(columnId)) {
+            copyData.sort(function (a, b) {
+                return (parseInt(a[columnId], 10) < parseInt(b[columnId], 10)) ? -1 : 1;
                 return 0;
             });
         }
         //works for columns: 6, 7
-        if ([5, 6].includes(columnIndex)) {
-            columnData.sort((a, b) => a[0] - b[0]);
+        if ([5, 6].includes(columnId)) {
+            copyData.sort((a, b) => a[columnId] - b[columnId]);
         }
 
-        columnData.forEach(el => {
-            var sortedRow = rowsToSort[el[1]].cloneNode(true);
-            sortedRow.classList.add('sorted_row');
-            tableToSort.appendChild(sortedRow);
-        })
+        appendRows(copyData);
 
-        rowsToSort.forEach(el => {
-            el.style.display = 'none';
-        })
+    } else {
+        sortedArr.length ? appendRows(sortedArr) : appendRows(tableData);;
     }
-}
-
-function resetSort() {
-    var sortedRows = [...document.querySelectorAll('.sorted_row')];
-    if (sortedRows.length) {
-        sortedRows.forEach(el => {
-            el.remove();
-        });
-    };
-    rowsToSort.forEach(el => {
-        el.removeAttribute('style');
-    });
 }
 
 var accordionButton = document.getElementById('accordionButton');
@@ -276,5 +227,21 @@ if (accordionButton && accordionContent) {
                 accordionContent.style.opacity = '1';
             }, 300);
         }
+    })
+}
+
+var searchButton = document.getElementById('searchButton');
+var searchBar = document.getElementById('searchBar');
+if (searchButton && searchBar) {
+    searchButton.parentNode.addEventListener('click', e => {
+        e.preventDefault();
+        searchBar.classList.toggle('search-panel__search-bar_hidden');
+        setTimeout(() => {
+            if (!searchBar.classList.contains('search-panel__search-bar_hidden')) {
+                searchBar.querySelector('.search-bar__input').focus();
+            } else {
+                searchBar.querySelector('.search-bar__input').value = '';
+            }
+        }, 200);
     })
 }

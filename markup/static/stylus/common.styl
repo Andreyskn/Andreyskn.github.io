@@ -41,6 +41,7 @@ body
                 width 100%
                 height 50px
                 background linear-gradient(0deg, rgba(255,255,255,0) 0%, #FFFFFF 100%)
+                pointer-events none
             &.blur_bottom:after
                 content ''
                 position absolute
@@ -48,6 +49,7 @@ body
                 height 50px
                 bottom 0
                 background linear-gradient(0deg, #FFFFFF 0%, rgba(255,255,255,0) 100%)
+                pointer-events none
 
         &::-webkit-scrollbar
             width 6px
@@ -249,6 +251,7 @@ body
     flex-wrap wrap
     justify-content center
     border-radius 5px
+    position relative
 
     &__search-button
         height 52px
@@ -288,11 +291,21 @@ body
             margin-bottom 10px
             display block
             color #697076
-            position: relative
+            position relative
             &.is_active
                 color #222026
             &:last-child
                 margin-bottom 0
+
+    &__search-bar
+        position absolute
+        top 0
+        left calc(100% + 10px)
+        opacity 1
+        transition opacity .2s
+        &_hidden
+            opacity 0
+            pointer-events none
 
 .search-button
     border 1px solid #D3D7DA
@@ -308,6 +321,20 @@ body
     justify-content center
     align-items center
     height 100%
+
+.checkbox
+    cursor pointer
+    &__input
+        display none
+
+    &__input:checked ~ &__image
+        background-color #f4f5f7
+
+    &__image
+        display flex
+        justify-content center
+        align-items center
+        height 100%
 
 .radio-button
     font-size 13px
@@ -365,3 +392,33 @@ body
             border-bottom 1px solid #51555C
         &-image
             font-size 24px
+
+.search-bar
+    box-shadow 0 2px 4px 0 rgba(0,0,0,0.5)
+    border-radius 5px
+    background-color #303038
+    padding 17px
+
+    &__inner
+        width 300px
+        height 50px
+        border 1px solid rgba(255, 255, 255, 0.5)
+        border-radius 3px
+        padding 17px
+        background-color #303038
+        display flex
+        align-items center
+
+
+    &__input
+        background-color inherit
+        border none
+        flex 1
+        color #ffffff
+        outline none
+        padding-right 10px
+
+    & .button
+        padding 0
+        border none
+        background none
