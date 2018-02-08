@@ -84,18 +84,18 @@ mixin content(data)
                     a.search-button#searchButton(href="#")
                 ul.search-panel__currencies
                     li.search-panel__currencies-item
-                        label.checkbox(data-value='RUB')
-                            input.checkbox__input(type='checkbox')
+                        label.checkbox
+                            input.checkbox__input(type='checkbox' value='RUB')
                             .checkbox__image
                                 img(src="%=static=%img/general/ruble.png", alt="")
                     li.search-panel__currencies-item
-                        label.checkbox(data-value='USD')
-                            input.checkbox__input(type='checkbox')
+                        label.checkbox
+                            input.checkbox__input(type='checkbox' value='USD')
                             .checkbox__image
                                 img(src="%=static=%img/general/dollar.png", alt="")
                     li.search-panel__currencies-item
-                        label.checkbox(data-value='EUR')
-                            input.checkbox__input(type='checkbox')
+                        label.checkbox
+                            input.checkbox__input(type='checkbox' value='EUR')
                             .checkbox__image
                                 img(src="%=static=%img/general/euro.png", alt="")
                 .search-panel__volume
@@ -113,6 +113,6 @@ mixin content(data)
                 .search-panel__search-bar.search-panel__search-bar_hidden#searchBar
                     .search-bar
                         .search-bar__inner
-                            input.search-bar__input(type='text' placeholder='Поиск')
+                            input.search-bar__input#searchInput(type='text' placeholder='Поиск')
                             button.button(type='button')
                                 img.button__image(src="%=static=%img/general/search.png", alt="")

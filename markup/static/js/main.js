@@ -39,13 +39,19 @@ var checksArr = [];
 if (checks.length && tableBody) {
     checks.forEach(checkbox => {
         checkbox.addEventListener('change', e => {
-            if (e.currentTarget.getElementsByClassName('checkbox__input')[0].checked) {
-                checksArr.push(e.currentTarget.getAttribute('data-value'));
-                showRows(checksArr);
+
+            let _this = e.currentTarget;
+            let value = _this.getElementsByClassName('checkbox__input')[0].value;
+
+
+            if (checksArr.indexOf(value) === -1) {
+                checksArr.push(value);
             } else {
-                checksArr = checksArr.filter(el => el !== e.currentTarget.getAttribute('data-value'));
-                showRows(checksArr);
+                checksArr.splice(checksArr.indexOf(value), 1);
             }
+
+            showRows(checksArr);
+
         })
     })
 }
@@ -53,7 +59,6 @@ if (checks.length && tableBody) {
 var sortedArr = [];
 function showRows(checksArr) {
     var columnToSort = document.querySelector('[class*="sort_"]');
-    tableBody.innerHTML = '';
 
     if (checksArr.length) {
         sortedArr = tableData.filter(row => checksArr.some(el => row[0].includes(el)));
@@ -65,6 +70,7 @@ function showRows(checksArr) {
 }
 
 function appendRows(arr) {
+    tableBody.innerHTML = '';
     arr.map(row => {
         var tr = document.createElement('tr');
         tr.classList.add('table__body-row');
@@ -126,7 +132,6 @@ function sortTable(columnToSort) {
     sortedArr.length ? arrayToSort = sortedArr : arrayToSort = tableData;
 
     var columnId = tableHeadCells.indexOf(columnToSort);
-    tableBody.innerHTML = '';
 
     if (columnToSort.classList.contains('sort_down')) {
 
@@ -260,5 +265,14 @@ if (searchButton && searchBar) {
                 searchBar.querySelector('.search-bar__input').value = '';
             }
         }, 200);
+    })
+}
+
+var searchInput = document.getElementById('searchInput');
+if (searchInput) {
+    searchInput.addEventListener('input', e => {
+        var val = searchInput.value.toLowerCase();
+        var searchResult = tableData.filter(row => row.some(el => (typeof el == 'string') ? el.toLowerCase().includes(val) : el.toString().includes(val)));
+        appendRows(searchResult);
     })
 }
