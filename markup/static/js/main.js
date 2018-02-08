@@ -9,6 +9,18 @@ function switchActive(container, setActive) {
     setActive.classList.add('is_active');
 }
 
+let tabs = [...document.getElementsByClassName('tabs__link')];
+if (tabs.length) {
+    tabs.forEach(tab => {
+        tab.addEventListener('click', e => {
+            e.preventDefault();
+            if (!e.currentTarget.parentNode.classList.contains('is_active')) {
+                switchActive(e.currentTarget.parentNode.parentNode, e.currentTarget.parentNode);
+            }
+        })
+    })
+}
+
 let displayOptions = [...document.getElementsByClassName('radio-button')];
 if (displayOptions.length) {
     displayOptions.forEach(el => {
@@ -20,6 +32,7 @@ if (displayOptions.length) {
     })
 }
 
+//сортировка по валюте(чекбоксы)
 var tableBody = document.getElementById('tableBody');
 var checks = [...document.getElementsByClassName('checkbox')];
 var checksArr = [];
@@ -36,7 +49,7 @@ if (checks.length && tableBody) {
         })
     })
 }
-
+//сортировка по валюте(чекбоксы)
 var sortedArr = [];
 function showRows(checksArr) {
     var columnToSort = document.querySelector('[class*="sort_"]');
@@ -44,7 +57,7 @@ function showRows(checksArr) {
 
     if (checksArr.length) {
         sortedArr = tableData.filter(row => checksArr.some(el => row[0].includes(el)));
-        columnToSort ? sortTable(columnToSort, sortedArr) : appendRows(sortedArr);
+        columnToSort ? sortTable(columnToSort) : appendRows(sortedArr);
     } else {
         sortedArr = [];
         columnToSort ? sortTable(columnToSort) : appendRows(tableData);
@@ -64,56 +77,25 @@ function appendRows(arr) {
         })
         tableBody.append(tr);
     })
+    setClasses();
 }
 
-function blurEdges(tableContainer) {
-    var wrapper = document.querySelector('.data__table-wrapper');
-    var tableHeight = parseInt(window.getComputedStyle(document.querySelector('table')).height)
-    if (!tableContainer.classList.contains('data__table_narrow')) {
-        var maxScroll = tableHeight - parseInt(window.getComputedStyle(tableContainer).height) - 30;
-        if (tableContainer.scrollTop > 0) {
-            wrapper.classList.add('blur_top', 'blur_bottom');
-        }
-        if (tableContainer.scrollTop === 0) {
-            wrapper.classList.remove('blur_top');
-            wrapper.classList.add('blur_bottom');
-        }
-        if (tableContainer.scrollTop > maxScroll) {
-            wrapper.classList.remove('blur_bottom');
-        }
-    }
-}
-
-var tableContainer = document.querySelector('.data__table');
-if (tableContainer) {
-    blurEdges(tableContainer);
-    tableContainer.addEventListener('scroll', e => {
-        blurEdges(e.currentTarget);
-    })
-}
-
-function resizeTableContainer() {
-    var tableHeight = window.getComputedStyle(document.querySelector('table')).height;
-    var containerMaxHeight = window.getComputedStyle(document.querySelector('.data__table')).maxHeight
-    if (tableHeight < containerMaxHeight) {
-        document.querySelector('.data__table').classList.add('data__table_narrow');
-    } else {
-        document.querySelector('.data__table').classList.remove('data__table_narrow');
-    }
-}
-
-let tabs = [...document.getElementsByClassName('tabs__link')];
-if (tabs.length) {
-    tabs.forEach(tab => {
-        tab.addEventListener('click', e => {
-            e.preventDefault();
-            if (!e.currentTarget.parentNode.classList.contains('is_active')) {
-                switchActive(e.currentTarget.parentNode.parentNode, e.currentTarget.parentNode);
+function setClasses() {
+    var rows = [...tableBody.getElementsByClassName('table__body-row')];
+    rows.map(row => {
+        var cells = [...row.getElementsByClassName('table__body-cell')];
+        cells.map( (cell, index) => {
+            if ([5,6].includes(index)) {
+                cell.innerText < 0 ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
+            }
+            if ([7,8].includes(index)) {
+                Math.round(Math.random()) ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
             }
         })
     })
 }
 
+//сортировка по колонкам
 let tableColumns = [...document.getElementsByClassName('table__head-cell')];
 var tableHeadCells;
 if (tableColumns.length) {
@@ -138,10 +120,12 @@ if (tableColumns.length) {
     })
 }
 
-function sortTable(columnToSort, arrayToSort = tableData) {
+//сортировка по колонкам
+function sortTable(columnToSort) {
+    var arrayToSort;
+    sortedArr.length ? arrayToSort = sortedArr : arrayToSort = tableData;
 
     var columnId = tableHeadCells.indexOf(columnToSort);
-    var tableBody = document.getElementById('tableBody');
     tableBody.innerHTML = '';
 
     if (columnToSort.classList.contains('sort_down')) {
@@ -195,10 +179,48 @@ function sortTable(columnToSort, arrayToSort = tableData) {
         appendRows(copyData);
 
     } else {
-        sortedArr.length ? appendRows(sortedArr) : appendRows(tableData);;
+        appendRows(arrayToSort);
     }
 }
 
+//скролл
+function resizeTableContainer() {
+    var tableHeight = window.getComputedStyle(document.querySelector('table')).height;
+    var containerMaxHeight = window.getComputedStyle(document.querySelector('.data__table')).maxHeight
+    if (tableHeight < containerMaxHeight) {
+        document.querySelector('.data__table').classList.add('data__table_narrow');
+    } else {
+        document.querySelector('.data__table').classList.remove('data__table_narrow');
+    }
+}
+//скролл
+function blurEdges(tableContainer) {
+    var wrapper = document.querySelector('.data__table-wrapper');
+    var tableHeight = parseInt(window.getComputedStyle(document.querySelector('table')).height)
+    if (!tableContainer.classList.contains('data__table_narrow')) {
+        var maxScroll = tableHeight - parseInt(window.getComputedStyle(tableContainer).height) - 30;
+        if (tableContainer.scrollTop > 0) {
+            wrapper.classList.add('blur_top', 'blur_bottom');
+        }
+        if (tableContainer.scrollTop === 0) {
+            wrapper.classList.remove('blur_top');
+            wrapper.classList.add('blur_bottom');
+        }
+        if (tableContainer.scrollTop > maxScroll) {
+            wrapper.classList.remove('blur_bottom');
+        }
+    }
+}
+//скролл
+var tableContainer = document.querySelector('.data__table');
+if (tableContainer) {
+    blurEdges(tableContainer);
+    tableContainer.addEventListener('scroll', e => {
+        blurEdges(e.currentTarget);
+    })
+}
+
+//аккордеон
 var accordionButton = document.getElementById('accordionButton');
 var accordionContent = document.getElementById('accordionContent');
 if (accordionButton && accordionContent) {
@@ -213,16 +235,10 @@ if (accordionButton && accordionContent) {
                 accordionButton.classList.remove('icon-up-open');
                 accordionButton.classList.add('icon-down-open', 'collapsed');
             }, 300);
-            setTimeout(() => {
-                accordionContent.style.display = 'none';
-            }, 600);
         } else {
-            accordionContent.style.display = 'flex';
-            setTimeout(() => {
                 accordionContent.classList.remove('accordion__item-list_is_closed');
                 accordionButton.classList.remove('icon-down-open', 'collapsed');
                 accordionButton.classList.add('icon-up-open');
-            }, 0);
             setTimeout(() => {
                 accordionContent.style.opacity = '1';
             }, 300);
@@ -230,6 +246,7 @@ if (accordionButton && accordionContent) {
     })
 }
 
+//поиск
 var searchButton = document.getElementById('searchButton');
 var searchBar = document.getElementById('searchBar');
 if (searchButton && searchBar) {
