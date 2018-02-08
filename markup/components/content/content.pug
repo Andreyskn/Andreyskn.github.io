@@ -3,19 +3,25 @@ mixin content(data)
   div.main-content
     h1.main-content__title  Торговые условия
     div.data
-        ul.tabs.tabs_rank_main
-            li.tabs__item.is_active
-                a.tabs__link(href='#') Валютный рынок FX
-            li.tabs__item
-                a.tabs__link(href='#') Драгметаллы
-            li.tabs__item
-                a.tabs__link(href='#') CFD
-            li.tabs__item
-                a.tabs__link(href='#') Евробонды
-            li.tabs__item
-                a.tabs__link(href='#') Форварды
-            li.tabs__item
-                a.tabs__link(href='#') Swap-Free
+        .data__top-wrapper
+            .data__tabs-container.dragscroll
+                ul.tabs.tabs_rank_main
+                    li.tabs__item.is_active
+                        a.tabs__link(href='#') Валютный рынок FX
+                    li.tabs__item
+                        a.tabs__link(href='#') Драгметаллы
+                    li.tabs__item
+                        a.tabs__link(href='#') CFD
+                    li.tabs__item
+                        a.tabs__link(href='#') Евробонды
+                    li.tabs__item
+                        a.tabs__link(href='#') Форварды
+                    li.tabs__item
+                        a.tabs__link(href='#') Swap-Free
+            .data__mobile-search
+                a.search-button(href="#")
+            .data__mobile-menu
+                a.mobile-menu#mobileMenu(href="#")
         ul.tabs.tabs_rank_extra
             li.tabs__item.is_active
                 a.tabs__link(href='#') Спецификации контрактов
@@ -81,7 +87,7 @@ mixin content(data)
         .data__search-panel
             .search-panel
                 .search-panel__search-button
-                    a.search-button#searchButton(href="#")
+                    a.search-button(href="#")
                 ul.search-panel__currencies
                     li.search-panel__currencies-item
                         label.checkbox
