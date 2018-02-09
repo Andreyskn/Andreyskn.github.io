@@ -1,98 +1,7 @@
 'use strict';
 import { tableData } from './tableData';
-
-/**
- * @fileoverview dragscroll - scroll area by dragging
- * @version 0.0.8
- *
- * @license MIT, see http://github.com/asvd/dragscroll
- * @copyright 2015 asvd <heliosframework@gmail.com>
- */
-
-
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(['exports'], factory);
-    } else if (typeof exports !== 'undefined') {
-        factory(exports);
-    } else {
-        factory((root.dragscroll = {}));
-    }
-}(this, function (exports) {
-    var _window = window;
-    var _document = document;
-    var mousemove = 'mousemove';
-    var mouseup = 'mouseup';
-    var mousedown = 'mousedown';
-    var EventListener = 'EventListener';
-    var addEventListener = 'add' + EventListener;
-    var removeEventListener = 'remove' + EventListener;
-    var newScrollX, newScrollY;
-
-    var dragged = [];
-    var reset = function (i, el) {
-        for (i = 0; i < dragged.length;) {
-            el = dragged[i++];
-            el = el.container || el;
-            el[removeEventListener](mousedown, el.md, 0);
-            _window[removeEventListener](mouseup, el.mu, 0);
-            _window[removeEventListener](mousemove, el.mm, 0);
-        }
-
-        // cloning into array since HTMLCollection is updated dynamically
-        dragged = [].slice.call(_document.getElementsByClassName('dragscroll'));
-        for (i = 0; i < dragged.length;) {
-            (function (el, lastClientX, lastClientY, pushed, scroller, cont) {
-                (cont = el.container || el)[addEventListener](
-                    mousedown,
-                    cont.md = function (e) {
-                        if (!el.hasAttribute('nochilddrag') ||
-                            _document.elementFromPoint(
-                                e.pageX, e.pageY
-                            ) == cont
-                        ) {
-                            pushed = 1;
-                            lastClientX = e.clientX;
-                            lastClientY = e.clientY;
-
-                            e.preventDefault();
-                        }
-                    }, 0
-                );
-
-                _window[addEventListener](
-                    mouseup, cont.mu = function () { pushed = 0; }, 0
-                );
-
-                _window[addEventListener](
-                    mousemove,
-                    cont.mm = function (e) {
-                        if (pushed) {
-                            (scroller = el.scroller || el).scrollLeft -=
-                                newScrollX = (- lastClientX + (lastClientX = e.clientX));
-                            scroller.scrollTop -=
-                                newScrollY = (- lastClientY + (lastClientY = e.clientY));
-                            if (el == _document.body) {
-                                (scroller = _document.documentElement).scrollLeft -= newScrollX;
-                                scroller.scrollTop -= newScrollY;
-                            }
-                        }
-                    }, 0
-                );
-            })(dragged[i++]);
-        }
-    }
-
-
-    if (_document.readyState == 'complete') {
-        reset();
-    } else {
-        _window[addEventListener]('load', reset, 0);
-    }
-
-    exports.reset = reset;
-}));
-
+import dragscroll from "dragscroll";
+import PerfectScrollbar from "perfect-scrollbar";
 
 function switchActive(container, setActive) {
     let array = [...container.children];
@@ -176,6 +85,8 @@ function appendRows(arr) {
         })
         tableBody.append(tr);
     })
+    ps.update();
+    hideScrollX();
     setClasses();
 }
 
@@ -282,40 +193,55 @@ function sortTable(columnToSort) {
 }
 
 //скролл
-function resizeTableContainer() {
-    var tableHeight = window.getComputedStyle(document.querySelector('table')).height;
-    var containerMaxHeight = window.getComputedStyle(document.querySelector('.data__table')).maxHeight
-    if (tableHeight < containerMaxHeight) {
-        document.querySelector('.data__table').classList.add('data__table_narrow');
-    } else {
-        document.querySelector('.data__table').classList.remove('data__table_narrow');
-    }
-}
-//скролл
-function blurEdges(tableContainer) {
-    var wrapper = document.querySelector('.data__table-wrapper');
-    var tableHeight = parseInt(window.getComputedStyle(document.querySelector('table')).height)
-    if (!tableContainer.classList.contains('data__table_narrow')) {
-        var maxScroll = tableHeight - parseInt(window.getComputedStyle(tableContainer).height) - 30;
-        if (tableContainer.scrollTop > 0) {
-            wrapper.classList.add('blur_top', 'blur_bottom');
-        }
-        if (tableContainer.scrollTop === 0) {
-            wrapper.classList.remove('blur_top');
-            wrapper.classList.add('blur_bottom');
-        }
-        if (tableContainer.scrollTop > maxScroll) {
-            wrapper.classList.remove('blur_bottom');
-        }
-    }
-}
-//скролл
-var tableContainer = document.querySelector('.data__table');
-if (tableContainer) {
-    blurEdges(tableContainer);
-    tableContainer.addEventListener('scroll', e => {
-        blurEdges(e.currentTarget);
+const tableContainer = document.querySelector('.data__table');
+const tableFullWrapper = document.querySelector('.data__table-wrapper');
+let ps, pss;
+
+if (tableContainer && tableFullWrapper) {
+
+    ps = new PerfectScrollbar(tableContainer);
+    pss = new PerfectScrollbar(tableFullWrapper);
+
+    tableFullWrapper.addEventListener('scroll', e => {
+        tableContainer.scrollLeft = tableFullWrapper.scrollLeft;
+        tableContainer.style.left = tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.left;
     })
+    window.addEventListener("resize", e => {
+        if (window.innerWidth <= 1110) {
+            pss.update();
+            tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.visibility = 'visible';
+        } else {
+            tableFullWrapper.scrollLeft = 0;
+            tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.visibility = 'hidden';
+        }
+    });
+    hideScrollX();
+    blurEdges();
+    tableContainer.addEventListener('scroll', e => {
+        blurEdges();
+    })
+}
+
+function hideScrollX() {
+    tableContainer.querySelector('.ps__rail-x').style.display = 'none';
+};
+
+//скролл
+function blurEdges() {
+    var tableHeight = parseInt(window.getComputedStyle(document.querySelectorAll('table')[1]).height);
+    var maxScroll = tableHeight - parseInt(window.getComputedStyle(tableContainer).height) - 30;
+
+    if (tableContainer.scrollTop > 0) {
+        tableFullWrapper.classList.add('blur_top');
+    }
+    if (tableContainer.scrollTop === 0) {
+        tableFullWrapper.classList.remove('blur_top');
+    }
+    if (tableContainer.scrollTop > maxScroll) {
+        tableFullWrapper.classList.remove('blur_bottom');
+    } else {
+        tableFullWrapper.classList.add('blur_bottom');
+    }
 }
 
 //аккордеон
@@ -376,6 +302,7 @@ let mobileMenu = document.getElementById('mobileMenu');
 let menuPanel = document.getElementsByClassName('data__search-panel')[0];
 if (mobileMenu) {
     mobileMenu.addEventListener('click', e => {
+        e.preventDefault();
         menuPanel.classList.toggle('show');
     })
 }

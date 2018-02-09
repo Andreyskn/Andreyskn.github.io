@@ -28,28 +28,50 @@ mixin content(data)
             li.tabs__item
                 a.tabs__link(href='#') Маржинальные требования
         .data__table-wrapper
+            .data__table-head
+                table.table
+                        thead.table__head
+                            tr.table__head-row
+                                th.table__head-cell
+                                    span.table__head-text Символ
+                                th.table__head-cell
+                                    span.table__head-text.table__head-text_tooltip Спрэд, пунктов
+                                th.table__head-cell
+                                    span.table__head-text Стоимость пункта в 1 лоте
+                                th.table__head-cell
+                                    span.table__head-text Размер контракта, для 1-го лота
+                                th.table__head-cell
+                                    span.table__head-text Уровни Limit&amp;Stop, пунктов
+                                th.table__head-cell
+                                    span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), пунктов
+                                th.table__head-cell
+                                    span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), пунктов
+                                th.table__head-cell
+                                    span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), в валюте счёта
+                                th.table__head-cell
+                                    span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
             .data__table
                 table.table
-                    thead.table__head
-                        tr.table__head-row
-                            th.table__head-cell
-                                span.table__head-text Символ
-                            th.table__head-cell
-                                span.table__head-text.table__head-text_tooltip Спрэд, пунктов
-                            th.table__head-cell
-                                span.table__head-text Стоимость пункта в 1 лоте
-                            th.table__head-cell
-                                span.table__head-text Размер контракта, для 1-го лота
-                            th.table__head-cell
-                                span.table__head-text Уровни Limit&amp;Stop, пунктов
-                            th.table__head-cell
-                                span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), пунктов
-                            th.table__head-cell
-                                span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), пунктов
-                            th.table__head-cell
-                                span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), в валюте счёта
-                            th.table__head-cell
-                                span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
+                    //- thead.table__head
+                    //-     tr.table__head-row
+                    //-         th.table__head-cell
+                    //-             span.table__head-text Символ
+                    //-         th.table__head-cell
+                    //-             span.table__head-text.table__head-text_tooltip Спрэд, пунктов
+                    //-         th.table__head-cell
+                    //-             span.table__head-text Стоимость пункта в 1 лоте
+                    //-         th.table__head-cell
+                    //-             span.table__head-text Размер контракта, для 1-го лота
+                    //-         th.table__head-cell
+                    //-             span.table__head-text Уровни Limit&amp;Stop, пунктов
+                    //-         th.table__head-cell
+                    //-             span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), пунктов
+                    //-         th.table__head-cell
+                    //-             span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), пунктов
+                    //-         th.table__head-cell
+                    //-             span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), в валюте счёта
+                    //-         th.table__head-cell
+                    //-             span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
                     tbody.table__body#tableBody
                         -
                         each row in data.tableRows
