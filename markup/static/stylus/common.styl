@@ -459,6 +459,100 @@ body
         border none
         background none
 
+.mobile-table
+    font-size 14px
+    line-height 16px
+    font-weight 300
+    &__row
+        padding 0 15px
+        border 1px solid #D3D7DA
+        border-left none
+        border-right none
+        transition all .2s
+        max-height 50px
+        margin-top -1px
+        & ^[0]__main-cell ^[0]__cell-value
+            font-weight 500
+        &:first-child
+            margin-top 0
+        &:nth-child(odd)
+            background-color #F4F5F7
+
+    &__main-row
+        position relative
+        height 48px
+        display flex
+        justify-content space-between
+        align-items center
+        border-bottom 1px dashed #D3D7DA
+        &:before
+            content '';
+            position absolute
+            width 1px
+            height 28px
+            background #D3D7DA
+            top 10px
+            left 23%
+
+        &:after
+            content '';
+            position absolute
+            width 1px
+            height 28px
+            background #D3D7DA
+            top 10px
+            left 52%
+
+    // &__main-cell
+
+    &__cell-heading
+        margin-right 5px
+        max-width 200px
+
+    &__cell-value
+        &_change_grow
+            color #318624
+        &_change_fall
+            color #E2322A
+
+    &__button
+        text-decoration none
+        height 15px
+        width 15px
+        position relative
+        &:before
+            content '\e801'
+            position absolute
+            top 0
+            left 0
+            font-size: 15px
+
+    &__extra-cell
+        padding 15px 0
+        height 48px
+        display flex
+        justify-content space-between
+        align-items center
+        border-bottom 1px dashed #D3D7DA
+        opacity 0
+        transition opacity .2s
+        &:nth-child(n+6) ^[0]__cell-value
+        &:nth-child(2) ^[0]__cell-value
+            font-weight 500
+
+        &:nth-child(4) ^[0]__cell-heading
+            max-width 125px
+        &:last-child
+            border none
+
+    &__row_closed &__extra-cell
+        display none
+    &__row_closed &__main-row
+        border none
+    &__row_closed &__button:before
+        content '\e802'
+
+
 @media screen and (max-width: 1240px)
     .page
         overflow-x hidden

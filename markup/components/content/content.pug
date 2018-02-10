@@ -52,26 +52,6 @@ mixin content(data)
                                     span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
             .data__table
                 table.table
-                    //- thead.table__head
-                    //-     tr.table__head-row
-                    //-         th.table__head-cell
-                    //-             span.table__head-text Символ
-                    //-         th.table__head-cell
-                    //-             span.table__head-text.table__head-text_tooltip Спрэд, пунктов
-                    //-         th.table__head-cell
-                    //-             span.table__head-text Стоимость пункта в 1 лоте
-                    //-         th.table__head-cell
-                    //-             span.table__head-text Размер контракта, для 1-го лота
-                    //-         th.table__head-cell
-                    //-             span.table__head-text Уровни Limit&amp;Stop, пунктов
-                    //-         th.table__head-cell
-                    //-             span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), пунктов
-                    //-         th.table__head-cell
-                    //-             span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), пунктов
-                    //-         th.table__head-cell
-                    //-             span.table__head-text.table__head-text_tooltip Своп long (длинных позиций), в валюте счёта
-                    //-         th.table__head-cell
-                    //-             span.table__head-text.table__head-text_tooltip Своп short (коротких позиций), в валюте счёта
                     tbody.table__body#tableBody
                         -
                         each row in data.tableRows
@@ -85,6 +65,39 @@ mixin content(data)
                                         td.table__body-cell.table__body-cell_change_fall= cell
                                     else
                                         td.table__body-cell.table__body-cell_change_grow= cell
+
+            //- .mobile-table
+            //-     .mobile-table__row.mobile-table__row_closed
+            //-         .mobile-table__main-row
+            //-             .mobile-table__main-cell
+            //-                 span.mobile-table__cell-value GBP/USD
+            //-             .mobile-table__main-cell
+            //-                 span.mobile-table__cell-heading Спрэд
+            //-                 span.mobile-table__cell-value 150
+            //-             .mobile-table__main-cell
+            //-                 span.mobile-table__cell-heading Своп
+            //-                 span.mobile-table__cell-value.mobile-table__cell-value_change_fall -0.22\
+            //-                 span.mobile-table__cell-value.mobile-table__cell-value_change_grow 0,73
+            //-             a.mobile-table__button.icon-up-open(href="#")
+            //-         .mobile-table__extra-cell
+            //-             span.mobile-table__cell-heading Спрэд, пунктов
+            //-             span.mobile-table__cell-value 0.9 (1.3)
+            //-         .mobile-table__extra-cell
+            //-             span.mobile-table__cell-heading Стоимость пункта в 1 лоте
+            //-             span.mobile-table__cell-value 100 USD
+            //-         .mobile-table__extra-cell
+            //-             span.mobile-table__cell-heading Размер контракта, для 1-го лота
+            //-             span.mobile-table__cell-value 100 000 USD
+            //-         .mobile-table__extra-cell
+            //-             span.mobile-table__cell-heading Уровни Limit&amp;Stop, пунктов
+            //-             span.mobile-table__cell-value 3
+            //-         .mobile-table__extra-cell
+            //-             span.mobile-table__cell-heading Своп long (длинных позиций), в валюте счёта
+            //-             span.mobile-table__cell-value.mobile-table__cell-value_change_fall 266,45 USD
+            //-         .mobile-table__extra-cell
+            //-             span.mobile-table__cell-heading Своп short (коротких позиций), в валюте счёта
+            //-             span.mobile-table__cell-value.mobile-table__cell-value_change_grow 266,45 USD
+
 
         .data__description
             div.description

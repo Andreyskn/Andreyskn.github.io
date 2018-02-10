@@ -72,22 +72,129 @@ function showRows(checksArr) {
 }
 
 function appendRows(arr) {
-    tableBody.innerHTML = '';
-    arr.map(row => {
-        var tr = document.createElement('tr');
-        tr.classList.add('table__body-row');
+    if (window.innerWidth <= 650) {
+        appendMobileTable(arr);
+    } else {
+        tableBody.innerHTML = '';
+        arr.map(row => {
+            let tr = document.createElement('tr');
+            tr.classList.add('table__body-row');
 
-        row.map(cell => {
-            var td = document.createElement('td');
-            td.classList.add('table__body-cell');
-            td.append(cell);
-            tr.append(td);
+            row.map(cell => {
+                let td = document.createElement('td');
+                td.classList.add('table__body-cell');
+                td.append(cell);
+                tr.append(td);
+            })
+            tableBody.append(tr);
         })
-        tableBody.append(tr);
+        ps.update();
+        hideScrollX();
+        setClasses();
+    }
+}
+setTimeout(() => {
+    appendMobileTable();
+}, 1000);
+let mobileTable;
+function appendMobileTable(arr = tableData) {
+    tableFullWrapper.innerHTML = '';
+
+    let mobileTable = document.createElement('div');
+    mobileTable.classList.add('mobile-table');
+
+    arr.map(row => {
+        let mobileRow = document.createElement('div');
+        mobileRow.classList.add('mobile-table__row', 'mobile-table__row_closed');
+
+        let headingsArray = ['', 'Спрэд, пунктов', 'Стоимость пункта в 1 лоте', 'Размер контракта, для 1-го лота', 'Уровни Limit&Stop, пунктов','','', 'Своп long (длинных позиций), в валюте счёта','Своп short (коротких позиций), в валюте счёта'];
+
+        let topRow = document.createElement('div');
+        topRow.classList.add('mobile-table__main-row');
+
+        let topCell3 = document.createElement('div');
+        topCell3.classList.add('mobile-table__main-cell');
+
+        let heading3 = document.createElement('span');
+        heading3.classList.add('mobile-table__cell-heading');
+        heading3.innerText = 'Своп';
+        topCell3.append(heading3);
+
+        row.map( (cell, index) => {
+            if (index == 0) {
+                let topCell = document.createElement('div');
+                topCell.classList.add('mobile-table__main-cell');
+
+                let value = document.createElement('span');
+                value.classList.add('mobile-table__cell-value');
+                value.append(cell);
+                topCell.append(value)
+                topRow.append(topCell);
+
+                let topCell2 = document.createElement('div');
+                topCell2.classList.add('mobile-table__main-cell');
+
+                let heading = document.createElement('span');
+                heading.classList.add('mobile-table__cell-heading');
+                heading.innerText = 'Спрэд';
+                topCell2.append(heading);
+
+                let value2 = document.createElement('span');
+                value2.classList.add('mobile-table__cell-value');
+                value2.innerText = '150';
+                topCell2.append(value2)
+                topRow.append(topCell2);
+                topRow.append(topCell3);
+
+                let link = document.createElement('a');
+                link.classList.add('mobile-table__button','icon-up-open');
+                link.setAttribute('href','#');
+                topRow.append(link);
+                mobileRow.append(topRow);
+            }
+            if ([5,6].includes(index)) {
+                let value = document.createElement('span');
+                value.classList.add('mobile-table__cell-value');
+                value.append(cell);
+                topCell3.append(value)
+            }
+            if (![0,5,6].includes(index)) {
+                let extra = document.createElement('div');
+                extra.classList.add('mobile-table__extra-cell');
+
+                let heading = document.createElement('span');
+                heading.classList.add('mobile-table__cell-heading');
+                heading.innerText = headingsArray[index];
+                extra.append(heading);
+
+                let value = document.createElement('span');
+                value.classList.add('mobile-table__cell-value');
+                value.append(cell);
+                extra.append(value)
+                mobileRow.append(extra);
+            }
+        })
+
+        mobileTable.append(mobileRow);
+        tableFullWrapper.append(mobileTable);
     })
-    ps.update();
-    hideScrollX();
-    setClasses();
+    mobileTable = document.getElementsByClassName('mobile-table')[0];
+    const buttonArray = [...document.getElementsByClassName('mobile-table__button')];
+    buttonArray.map(button => {
+        button.addEventListener('click', e => {
+            const _this = e.currentTarget;
+            const row = _this.parentNode.parentNode;
+            const cells = [...row.getElementsByClassName('mobile-table__extra-cell')];
+
+            row.classList.toggle('mobile-table__row_closed');
+            row.style.maxHeight = '338px'
+            setTimeout(() => {
+                cells.map(cell => {
+                    cell.style.opacity = '1';
+                })
+            }, 200);
+        })
+    })
 }
 
 function setClasses() {
@@ -210,6 +317,8 @@ if (tableContainer && tableFullWrapper) {
         if (window.innerWidth <= 1110) {
             pss.update();
             tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.visibility = 'visible';
+        } else if (window.innerWidth <= 650) {
+            appendMobileTable();
         } else {
             tableFullWrapper.scrollLeft = 0;
             tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.visibility = 'hidden';
@@ -228,19 +337,22 @@ function hideScrollX() {
 
 //скролл
 function blurEdges() {
-    var tableHeight = parseInt(window.getComputedStyle(document.querySelectorAll('table')[1]).height);
-    var maxScroll = tableHeight - parseInt(window.getComputedStyle(tableContainer).height) - 30;
+    const table = document.querySelectorAll('table')[1];
+    if (table) {
+        var tableHeight = parseInt(window.getComputedStyle(table).height);
+        var maxScroll = tableHeight - parseInt(window.getComputedStyle(tableContainer).height) - 30;
 
-    if (tableContainer.scrollTop > 0) {
-        tableFullWrapper.classList.add('blur_top');
-    }
-    if (tableContainer.scrollTop === 0) {
-        tableFullWrapper.classList.remove('blur_top');
-    }
-    if (tableContainer.scrollTop > maxScroll) {
-        tableFullWrapper.classList.remove('blur_bottom');
-    } else {
-        tableFullWrapper.classList.add('blur_bottom');
+        if (tableContainer.scrollTop > 0) {
+            tableFullWrapper.classList.add('blur_top');
+        }
+        if (tableContainer.scrollTop === 0) {
+            tableFullWrapper.classList.remove('blur_top');
+        }
+        if (tableContainer.scrollTop > maxScroll) {
+            tableFullWrapper.classList.remove('blur_bottom');
+        } else {
+            tableFullWrapper.classList.add('blur_bottom');
+        }
     }
 }
 
@@ -306,3 +418,23 @@ if (mobileMenu) {
         menuPanel.classList.toggle('show');
     })
 }
+
+
+// if (mobileTable) {
+//     const buttonArray = [...document.getElementsByClassName('mobile-table__button')];
+//     buttonArray.map(button => {
+//         button.addEventListener('click', e => {
+//             const _this = e.currentTarget;
+//             const row = _this.parentNode.parentNode;
+//             const cells = [...row.getElementsByClassName('mobile-table__extra-cell')];
+
+//             row.classList.toggle('mobile-table__row_closed');
+//             row.style.maxHeight = '338px'
+//             setTimeout(() => {
+//                 cells.map(cell => {
+//                     cell.style.opacity = '1';
+//                 })
+//             }, 200);
+//         })
+//     })
+// }
