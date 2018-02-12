@@ -74,6 +74,7 @@ function showRows(checksArr) {
 function appendRows(arr) {
     if (window.innerWidth <= 650) {
         appendMobileTable(arr);
+        pss.update();
     } else {
         tableBody.innerHTML = '';
         arr.map(row => {
@@ -93,10 +94,16 @@ function appendRows(arr) {
         setClasses();
     }
 }
-setTimeout(() => {
-    appendMobileTable();
-}, 1000);
-let mobileTable;
+
+window.onload = () => {
+    if (window.innerWidth <= 650) {
+        appendRows();
+        accordionButton.click();
+        tableFullWrapper.classList.remove('blur_bottom');
+    }
+}
+
+let mobile;
 function appendMobileTable(arr = tableData) {
     tableFullWrapper.innerHTML = '';
 
@@ -177,39 +184,60 @@ function appendMobileTable(arr = tableData) {
 
         mobileTable.append(mobileRow);
         tableFullWrapper.append(mobileTable);
+
     })
-    mobileTable = document.getElementsByClassName('mobile-table')[0];
+
+    handleMobileTableButtons();
+    mobile = document.getElementsByClassName('mobile-table')[0];
+    setClasses();
+
+    let slashArray = [...document.querySelectorAll('.mobile-table__main-cell:nth-child(3)>.mobile-table__cell-value:nth-child(2)')];
+    slashArray.map(el => {
+        el.innerText += '\\';
+    })
+}
+
+function handleMobileTableButtons() {
     const buttonArray = [...document.getElementsByClassName('mobile-table__button')];
+
     buttonArray.map(button => {
         button.addEventListener('click', e => {
             const _this = e.currentTarget;
             const row = _this.parentNode.parentNode;
             const cells = [...row.getElementsByClassName('mobile-table__extra-cell')];
 
+            e.preventDefault();
             row.classList.toggle('mobile-table__row_closed');
-            row.style.maxHeight = '338px'
-            setTimeout(() => {
-                cells.map(cell => {
-                    cell.style.opacity = '1';
-                })
-            }, 200);
         })
     })
 }
 
 function setClasses() {
-    var rows = [...tableBody.getElementsByClassName('table__body-row')];
-    rows.map(row => {
-        var cells = [...row.getElementsByClassName('table__body-cell')];
-        cells.map( (cell, index) => {
-            if ([5,6].includes(index)) {
-                cell.innerText < 0 ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
-            }
-            if ([7,8].includes(index)) {
-                Math.round(Math.random()) ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
-            }
+    if (mobile) {
+        let mainRowCells = [...mobile.querySelectorAll('.mobile-table__main-cell:nth-child(3) .mobile-table__cell-value')];
+        let extraCells = [...mobile.querySelectorAll('.mobile-table__extra-cell:nth-child(n+6) .mobile-table__cell-value')];
+
+        mainRowCells.map(cell => {
+            cell.innerText < 0 ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
+        });
+        extraCells.map(cell => {
+            Math.round(Math.random()) ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
+        });
+    } else {
+        let rows = [...tableBody.getElementsByClassName('table__body-row')];
+
+        rows.map(row => {
+            let cells = [...row.getElementsByClassName('table__body-cell')];
+            cells.map( (cell, index) => {
+                if ([5,6].includes(index)) {
+                    cell.innerText < 0 ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
+                }
+                if ([7,8].includes(index)) {
+                    Math.round(Math.random()) ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
+                }
+            })
         })
-    })
+    }
 }
 
 //сортировка по колонкам
@@ -302,6 +330,7 @@ function sortTable(columnToSort) {
 //скролл
 const tableContainer = document.querySelector('.data__table');
 const tableFullWrapper = document.querySelector('.data__table-wrapper');
+const tableHead = document.querySelector('.data__table-head');
 let ps, pss;
 
 if (tableContainer && tableFullWrapper) {
@@ -310,22 +339,24 @@ if (tableContainer && tableFullWrapper) {
     pss = new PerfectScrollbar(tableFullWrapper);
 
     tableFullWrapper.addEventListener('scroll', e => {
-        tableContainer.scrollLeft = tableFullWrapper.scrollLeft;
-        tableContainer.style.left = tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.left;
+        if (!mobile) {
+            tableContainer.scrollLeft = tableFullWrapper.scrollLeft;
+            tableContainer.style.left = tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.left;
+        }
     })
     window.addEventListener("resize", e => {
-        if (window.innerWidth <= 1110) {
+        if (!mobile && window.innerWidth <= 1110) {
             pss.update();
             tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.visibility = 'visible';
-        } else if (window.innerWidth <= 650) {
-            appendMobileTable();
-        } else {
+            tableContainer.style.visibility = 'visible';
+            tableHead.style.visibility = 'visible';
+        }
+        if (!mobile && window.innerWidth > 1110) {
             tableFullWrapper.scrollLeft = 0;
             tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.visibility = 'hidden';
         }
     });
     hideScrollX();
-    blurEdges();
     tableContainer.addEventListener('scroll', e => {
         blurEdges();
     })
@@ -372,9 +403,9 @@ if (accordionButton && accordionContent) {
                 accordionButton.classList.add('icon-down-open', 'collapsed');
             }, 300);
         } else {
-                accordionContent.classList.remove('accordion__item-list_is_closed');
-                accordionButton.classList.remove('icon-down-open', 'collapsed');
-                accordionButton.classList.add('icon-up-open');
+            accordionContent.classList.remove('accordion__item-list_is_closed');
+            accordionButton.classList.remove('icon-down-open', 'collapsed');
+            accordionButton.classList.add('icon-up-open');
             setTimeout(() => {
                 accordionContent.style.opacity = '1';
             }, 300);
@@ -418,23 +449,3 @@ if (mobileMenu) {
         menuPanel.classList.toggle('show');
     })
 }
-
-
-// if (mobileTable) {
-//     const buttonArray = [...document.getElementsByClassName('mobile-table__button')];
-//     buttonArray.map(button => {
-//         button.addEventListener('click', e => {
-//             const _this = e.currentTarget;
-//             const row = _this.parentNode.parentNode;
-//             const cells = [...row.getElementsByClassName('mobile-table__extra-cell')];
-
-//             row.classList.toggle('mobile-table__row_closed');
-//             row.style.maxHeight = '338px'
-//             setTimeout(() => {
-//                 cells.map(cell => {
-//                     cell.style.opacity = '1';
-//                 })
-//             }, 200);
-//         })
-//     })
-// }
