@@ -224,7 +224,6 @@ body
         margin: 0;
 
 .accordion
-
     &__button
         display inline-block
         color #222026
@@ -238,15 +237,17 @@ body
         position relative
         text-decoration none
         transition all 0.3s
-        &.collapsed
+        ~/.is_closed &
             margin-bottom 0
+        ~/.is_closed &:before
+            content '\e802'
 
     &__item-list
         display flex
         flex-wrap wrap
         transition all .3s
         overflow hidden
-        &_is_closed
+        ~/.is_closed &
             max-height 0 !important
             pointer-events none
 
@@ -634,7 +635,7 @@ body
         padding-bottom 0
     .data__table-wrapper
         width 97vw
-        height 785px
+        max-height 785px
         margin 0 auto
         padding-bottom 0
         margin-bottom 24px
@@ -684,6 +685,8 @@ body
         display none
     .data
         padding-top 0
+        padding-bottom 22px
+
 @media screen and (max-width: 483px)
     .accordion__text
         line-height 22px

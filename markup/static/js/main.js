@@ -1,66 +1,73 @@
 'use strict';
 import { tableData } from './tableData';
-import dragscroll from "dragscroll";
-import PerfectScrollbar from "perfect-scrollbar";
+import dragscroll from 'dragscroll';
+import PerfectScrollbar from 'perfect-scrollbar';
 
-function switchActive(container, setActive) {
-    let array = [...container.children];
-    array.forEach(element => {
-        element.classList.remove('is_active');
-    });
-    setActive.classList.add('is_active');
+class Active {
+    constructor(array) {
+        this.links = array;
+        this.item = null;
+        this.container = null;
+        this.siblings = null;
+    }
+
+    switchActive(link) {
+        this.item = link.parentNode;
+        this.container = this.item.parentNode;
+        this.siblings = [...this.container.children];
+
+        this.siblings.forEach(element => {
+            element.classList.remove('is_active');
+        });
+        this.item.classList.add('is_active');
+    }
 }
 
-let tabs = [...document.getElementsByClassName('tabs__link')];
-if (tabs.length) {
-    tabs.forEach(tab => {
-        tab.addEventListener('click', e => {
-            e.preventDefault();
-            if (!e.currentTarget.parentNode.classList.contains('is_active')) {
-                switchActive(e.currentTarget.parentNode.parentNode, e.currentTarget.parentNode);
-            }
-        })
-    })
-}
+const tabs = [...document.getElementsByClassName('tabs__link')];
+const displayOptions = [...document.getElementsByClassName('radio-button')];
+const activeArray = [...tabs, ...displayOptions];
 
-let displayOptions = [...document.getElementsByClassName('radio-button')];
-if (displayOptions.length) {
-    displayOptions.forEach(el => {
+let active = new Active(activeArray);
+
+if (activeArray.length) {
+    activeArray.forEach(el => {
         el.addEventListener('click', e => {
-            if (!e.currentTarget.parentNode.classList.contains('is_active')) {
-                switchActive(e.currentTarget.parentNode.parentNode, e.currentTarget.parentNode);
+            let _this = e.currentTarget;
+            let item = _this.parentNode;
+
+            if (tabs.includes(_this)) {
+                e.preventDefault();
+            }
+            if (!item.classList.contains('is_active')) {
+                active.switchActive(_this);
             }
         })
     })
 }
 
 //сортировка по валюте(чекбоксы)
-var tableBody = document.getElementById('tableBody');
-var checks = [...document.getElementsByClassName('checkbox')];
-var checksArr = [];
+let tableBody = document.getElementById('tableBody');
+let checks = [...document.getElementsByClassName('checkbox')];
+let checksArr = [];
 if (checks.length && tableBody) {
     checks.forEach(checkbox => {
         checkbox.addEventListener('change', e => {
-
             let _this = e.currentTarget;
             let value = _this.getElementsByClassName('checkbox__input')[0].value;
-
 
             if (checksArr.indexOf(value) === -1) {
                 checksArr.push(value);
             } else {
                 checksArr.splice(checksArr.indexOf(value), 1);
             }
-
             showRows(checksArr);
-
         })
     })
 }
 //сортировка по валюте(чекбоксы)
-var sortedArr = [];
+let sortedArr = [];
 function showRows(checksArr) {
-    var columnToSort = document.querySelector('[class*="sort_"]');
+    let columnToSort = document.querySelector('[class*="sort_"]');
 
     if (checksArr.length) {
         sortedArr = tableData.filter(row => checksArr.some(el => row[0].includes(el)));
@@ -114,7 +121,7 @@ function appendMobileTable(arr = tableData) {
         let mobileRow = document.createElement('div');
         mobileRow.classList.add('mobile-table__row', 'mobile-table__row_closed');
 
-        let headingsArray = ['', 'Спрэд, пунктов', 'Стоимость пункта в 1 лоте', 'Размер контракта, для 1-го лота', 'Уровни Limit&Stop, пунктов','','', 'Своп long (длинных позиций), в валюте счёта','Своп short (коротких позиций), в валюте счёта'];
+        let headingsArray = ['', 'Спрэд, пунктов', 'Стоимость пункта в 1 лоте', 'Размер контракта, для 1-го лота', 'Уровни Limit&Stop, пунктов', '', '', 'Своп long (длинных позиций), в валюте счёта', 'Своп short (коротких позиций), в валюте счёта'];
 
         let topRow = document.createElement('div');
         topRow.classList.add('mobile-table__main-row');
@@ -127,7 +134,7 @@ function appendMobileTable(arr = tableData) {
         heading3.innerText = 'Своп';
         topCell3.append(heading3);
 
-        row.map( (cell, index) => {
+        row.map((cell, index) => {
             if (index == 0) {
                 let topCell = document.createElement('div');
                 topCell.classList.add('mobile-table__main-cell');
@@ -154,18 +161,18 @@ function appendMobileTable(arr = tableData) {
                 topRow.append(topCell3);
 
                 let link = document.createElement('a');
-                link.classList.add('mobile-table__button','icon-up-open');
-                link.setAttribute('href','#');
+                link.classList.add('mobile-table__button', 'icon-up-open');
+                link.setAttribute('href', '#');
                 topRow.append(link);
                 mobileRow.append(topRow);
             }
-            if ([5,6].includes(index)) {
+            if ([5, 6].includes(index)) {
                 let value = document.createElement('span');
                 value.classList.add('mobile-table__cell-value');
                 value.append(cell);
                 topCell3.append(value)
             }
-            if (![0,5,6].includes(index)) {
+            if (![0, 5, 6].includes(index)) {
                 let extra = document.createElement('div');
                 extra.classList.add('mobile-table__extra-cell');
 
@@ -228,11 +235,11 @@ function setClasses() {
 
         rows.map(row => {
             let cells = [...row.getElementsByClassName('table__body-cell')];
-            cells.map( (cell, index) => {
-                if ([5,6].includes(index)) {
+            cells.map((cell, index) => {
+                if ([5, 6].includes(index)) {
                     cell.innerText < 0 ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
                 }
-                if ([7,8].includes(index)) {
+                if ([7, 8].includes(index)) {
                     Math.round(Math.random()) ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
                 }
             })
@@ -242,7 +249,7 @@ function setClasses() {
 
 //сортировка по колонкам
 let tableColumns = [...document.getElementsByClassName('table__head-cell')];
-var tableHeadCells;
+let tableHeadCells;
 if (tableColumns.length) {
     tableColumns.forEach(column => {
         column.addEventListener('click', e => {
@@ -267,14 +274,14 @@ if (tableColumns.length) {
 
 //сортировка по колонкам
 function sortTable(columnToSort) {
-    var arrayToSort;
+    let arrayToSort;
     sortedArr.length ? arrayToSort = sortedArr : arrayToSort = tableData;
 
-    var columnId = tableHeadCells.indexOf(columnToSort);
+    let columnId = tableHeadCells.indexOf(columnToSort);
 
     if (columnToSort.classList.contains('sort_down')) {
 
-        var copyData = arrayToSort.slice();
+        let copyData = arrayToSort.slice();
 
         //works for columns: 1, 2, 5, 8, 9
         if ([0, 1, 4, 7, 8].includes(columnId)) {
@@ -299,7 +306,7 @@ function sortTable(columnToSort) {
 
     } else if (columnToSort.classList.contains('sort_up')) {
 
-        var copyData = arrayToSort.slice();
+        let copyData = arrayToSort.slice();
 
         //works for columns: 1, 2, 5, 8, 9
         if ([0, 1, 4, 7, 8].includes(columnId)) {
@@ -370,8 +377,8 @@ function hideScrollX() {
 function blurEdges() {
     const table = document.querySelectorAll('table')[1];
     if (table) {
-        var tableHeight = parseInt(window.getComputedStyle(table).height);
-        var maxScroll = tableHeight - parseInt(window.getComputedStyle(tableContainer).height) - 30;
+        let tableHeight = parseInt(window.getComputedStyle(table).height);
+        let maxScroll = tableHeight - parseInt(window.getComputedStyle(tableContainer).height) - 30;
 
         if (tableContainer.scrollTop > 0) {
             tableFullWrapper.classList.add('blur_top');
@@ -388,26 +395,28 @@ function blurEdges() {
 }
 
 //аккордеон
-var accordionButton = document.getElementById('accordionButton');
-var accordionContent = document.getElementById('accordionContent');
+const accordionButton = document.getElementById('accordionButton');
+const accordionContent = document.getElementById('accordionContent');
+
 if (accordionButton && accordionContent) {
-    var contentHeight = window.getComputedStyle(accordionContent).height;
+    const contentHeight = window.getComputedStyle(accordionContent).height;
+
     accordionButton.addEventListener('click', e => {
+        const _this = e.currentTarget;
+        const contentHeight = window.getComputedStyle(accordionContent).height;
+        const accord = _this.parentNode;
+
         e.preventDefault();
-        if (!e.currentTarget.classList.contains('collapsed')) {
-            accordionContent.style.opacity = '0';
-            accordionContent.style.maxHeight = window.getComputedStyle(accordionContent).height;
-            setTimeout(() => {
-                accordionContent.classList.add('accordion__item-list_is_closed');
-                accordionButton.classList.remove('icon-up-open');
-                accordionButton.classList.add('icon-down-open', 'collapsed');
-            }, 300);
-        } else {
-            accordionContent.classList.remove('accordion__item-list_is_closed');
-            accordionButton.classList.remove('icon-down-open', 'collapsed');
-            accordionButton.classList.add('icon-up-open');
+        if (accord.classList.contains('is_closed')) {
+            accord.classList.toggle('is_closed');
             setTimeout(() => {
                 accordionContent.style.opacity = '1';
+            }, 300);
+        } else {
+            accordionContent.style.opacity = '0';
+            accordionContent.style.maxHeight = contentHeight;
+            setTimeout(() => {
+                accord.classList.toggle('is_closed');
             }, 300);
         }
     })
@@ -415,7 +424,7 @@ if (accordionButton && accordionContent) {
 
 //поиск
 let searchButtons = [...document.getElementsByClassName('search-button')];
-var searchBar = document.getElementById('searchBar');
+let searchBar = document.getElementById('searchBar');
 if (searchButtons.length && searchBar) {
     searchButtons.map(el => {
         el.addEventListener('click', e => {
@@ -432,11 +441,11 @@ if (searchButtons.length && searchBar) {
     })
 }
 
-var searchInput = document.getElementById('searchInput');
+let searchInput = document.getElementById('searchInput');
 if (searchInput) {
     searchInput.addEventListener('input', e => {
-        var val = searchInput.value.toLowerCase();
-        var searchResult = tableData.filter(row => row.some(el => (typeof el == 'string') ? el.toLowerCase().includes(val) : el.toString().includes(val)));
+        let val = searchInput.value.toLowerCase();
+        let searchResult = tableData.filter(row => row.some(el => (typeof el == 'string') ? el.toLowerCase().includes(val) : el.toString().includes(val)));
         appendRows(searchResult);
     })
 }
