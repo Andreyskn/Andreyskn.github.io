@@ -19,13 +19,13 @@ export default class Render {
             this.innerScroll = new PerfectScrollbar(this.tableContainer);
             this.fullScroll = new PerfectScrollbar(this.tableFullWrapper);
 
-            this.tableFullWrapper.addEventListener('scroll', e => {
+            this.tableFullWrapper.addEventListener('scroll', () => {
                 if (!this.mobile) {
                     this.tableContainer.scrollLeft = this.tableFullWrapper.scrollLeft;
                     this.tableContainer.style.left = this.tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.left;
                 }
             });
-            window.addEventListener("resize", e => {
+            window.addEventListener('resize', () => {
                 if (!this.mobile && window.innerWidth <= 1110) {
                     this.fullScroll.update();
                     this.tableFullWrapper.querySelectorAll('.ps__rail-x')[1].style.visibility = 'visible';
@@ -38,13 +38,13 @@ export default class Render {
                 }
             });
             this.blurEdges();
-            this.tableContainer.addEventListener('scroll', e => {
+            this.tableContainer.addEventListener('scroll', () => {
                 this.blurEdges();
-            })
+            });
             this.hideScrollX();
         }
         if (window.innerWidth <= 650) {
-            tableFullWrapper.classList.remove('blur_bottom');
+            this.tableFullWrapper.classList.remove('blur_bottom');
         }
     }
 
@@ -56,8 +56,8 @@ export default class Render {
         const table = document.querySelectorAll('table')[1];
 
         if (table) {
-            const tableHeight = parseInt(window.getComputedStyle(table).height);
-            const maxScroll = tableHeight - parseInt(window.getComputedStyle(this.tableContainer).height) - 30;
+            const tableHeight = parseInt(window.getComputedStyle(table).height, 10);
+            const maxScroll = tableHeight - parseInt(window.getComputedStyle(this.tableContainer).height, 10) - 30;
 
             if (this.tableContainer.scrollTop > 0) {
                 this.tableFullWrapper.classList.add('blur_top');
@@ -89,10 +89,10 @@ export default class Render {
                     let td = document.createElement('td');
                     td.classList.add('table__body-cell');
                     td.append(cell);
-                    tr.append(this.td);
-                })
+                    tr.append(td);
+                });
                 this.tableBody.append(tr);
-            })
+            });
             this.innerScroll.update();
             this.hideScrollX();
             this.setClasses();
@@ -105,10 +105,10 @@ export default class Render {
             let extraCells = [...this.mobile.querySelectorAll('.mobile-table__extra-cell:nth-child(n+6) .mobile-table__cell-value')];
 
             mainRowCells.map(cell => {
-                cell.innerText < 0 ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
+                return cell.innerText < 0 ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
             });
             extraCells.map(cell => {
-                Math.round(Math.random()) ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
+                return Math.round(Math.random()) ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
             });
         } else {
             const rows = [...this.tableBody.getElementsByClassName('table__body-row')];
@@ -118,13 +118,13 @@ export default class Render {
 
                 cells.map((cell, index) => {
                     if ([5, 6].includes(index)) {
-                        cell.innerText < 0 ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
+                        return cell.innerText < 0 ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
                     }
                     if ([7, 8].includes(index)) {
-                        Math.round(Math.random()) ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
+                        return Math.round(Math.random()) ? cell.classList.add('table__body-cell_change_fall') : cell.classList.add('table__body-cell_change_grow');
                     }
-                })
-            })
+                });
+            });
         }
     }
 
@@ -152,14 +152,14 @@ export default class Render {
             topCell3.append(heading3);
 
             row.map((cell, index) => {
-                if (index == 0) {
+                if (index === 0) {
                     let topCell = document.createElement('div');
                     topCell.classList.add('mobile-table__main-cell');
 
                     let value = document.createElement('span');
                     value.classList.add('mobile-table__cell-value');
                     value.append(cell);
-                    topCell.append(value)
+                    topCell.append(value);
                     topRow.append(topCell);
 
                     let topCell2 = document.createElement('div');
@@ -173,7 +173,7 @@ export default class Render {
                     let value2 = document.createElement('span');
                     value2.classList.add('mobile-table__cell-value');
                     value2.innerText = '150';
-                    topCell2.append(value2)
+                    topCell2.append(value2);
                     topRow.append(topCell2);
                     topRow.append(topCell3);
 
@@ -187,7 +187,7 @@ export default class Render {
                     let value = document.createElement('span');
                     value.classList.add('mobile-table__cell-value');
                     value.append(cell);
-                    topCell3.append(value)
+                    topCell3.append(value);
                 }
                 if (![0, 5, 6].includes(index)) {
                     let extra = document.createElement('div');
@@ -201,15 +201,15 @@ export default class Render {
                     let value = document.createElement('span');
                     value.classList.add('mobile-table__cell-value');
                     value.append(cell);
-                    extra.append(value)
+                    extra.append(value);
                     mobileRow.append(extra);
                 }
-            })
+            });
 
             mobileTable.append(mobileRow);
             this.tableFullWrapper.append(mobileTable);
 
-        })
+        });
 
         this.handleMobileTableButtons();
         this.mobile = document.getElementsByClassName('mobile-table')[0];
@@ -218,7 +218,7 @@ export default class Render {
         let slashArray = [...document.querySelectorAll('.mobile-table__main-cell:nth-child(3)>.mobile-table__cell-value:nth-child(2)')];
         slashArray.map(el => {
             el.innerText += '\\';
-        })
+        });
     }
 
     handleMobileTableButtons() {
@@ -231,7 +231,7 @@ export default class Render {
 
                 e.preventDefault();
                 row.classList.toggle('mobile-table__row_closed');
-            })
-        })
+            });
+        });
     }
 }

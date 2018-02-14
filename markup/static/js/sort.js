@@ -15,14 +15,12 @@ export default class Sort {
             if ([0, 1, 4, 7, 8].includes(columnId)) {
                 copyData.sort((a, b) => {
                     return a[columnId] > b[columnId] ? -1 : 1;
-                    return 0;
                 });
             }
             // works for columns: 3, 4
             if ([2, 3].includes(columnId)) {
                 copyData.sort((a, b) => {
                     return (parseInt(a[columnId], 10) < parseInt(b[columnId], 10)) ? 1 : -1;
-                    return 0;
                 });
             }
             // works for columns: 6, 7
@@ -40,14 +38,12 @@ export default class Sort {
             if ([0, 1, 4, 7, 8].includes(columnId)) {
                 copyData.sort((a, b) => {
                     return a[columnId] > b[columnId] ? 1 : -1;
-                    return 0;
                 });
             }
             // works for columns: 3, 4
             if ([2, 3].includes(columnId)) {
                 copyData.sort((a, b) => {
                     return (parseInt(a[columnId], 10) < parseInt(b[columnId], 10)) ? -1 : 1;
-                    return 0;
                 });
             }
             // works for columns: 6, 7

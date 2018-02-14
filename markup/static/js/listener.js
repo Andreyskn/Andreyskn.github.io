@@ -2,7 +2,7 @@ import Click from './click';
 
 export default class Listener {
     constructor() {
-         this.click = new Click();
+        this.click = new Click();
     }
 
     active(links) {
@@ -17,8 +17,8 @@ export default class Listener {
                 if (!item.classList.contains('is_active')) {
                     this.click.switchActive(item);
                 }
-            })
-        })
+            });
+        });
     }
 
     sortByCurrency(checks) {
@@ -35,8 +35,8 @@ export default class Listener {
                     checksArr.splice(checksArr.indexOf(value), 1);
                 }
                 this.click.showRows(checksArr);
-            })
-        })
+            });
+        });
     }
 
     sortByColumn(tableColumns) {
@@ -45,8 +45,8 @@ export default class Listener {
                 const _this = e.currentTarget;
 
                 this.click.columnClick(_this);
-            })
-        })
+            });
+        });
     }
 
     accordion(button, content, contentHeight) {
@@ -67,7 +67,7 @@ export default class Listener {
                     accord.classList.toggle('is_closed');
                 }, 300);
             }
-        })
+        });
     }
 
     searchButton(buttons, searchBar) {
@@ -82,20 +82,20 @@ export default class Listener {
                         searchBar.querySelector('.search-bar__input').value = '';
                     }
                 }, 200);
-            })
-        })
+            });
+        });
     }
 
     searchInput(searchInput) {
-        searchInput.addEventListener('input', e => {
+        searchInput.addEventListener('input', () => {
             this.click.search(searchInput);
-        })
+        });
     }
 
-    mobileMenu(mobileMenu) {
+    mobileMenu(mobileMenu, menuPanel) {
         mobileMenu.addEventListener('click', e => {
             e.preventDefault();
             menuPanel.classList.toggle('show');
-        })
+        });
     }
 }

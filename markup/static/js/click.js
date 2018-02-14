@@ -1,8 +1,8 @@
 import { tableData } from './tableData';
-import Sort from './sort'
+import Sort from './sort';
 import Render from './render';
 
- export default class Click {
+export default class Click {
     constructor() {
         this.sortedArr = tableData;
 
@@ -12,11 +12,11 @@ import Render from './render';
         this.init();
     }
 
-     init() {
-         if (window.innerWidth <= 650) {
-             this.render.appendRows(tableData);
-         }
-     }
+    init() {
+        if (window.innerWidth <= 650) {
+            this.render.appendRows(tableData);
+        }
+    }
 
     switchActive(item) {
         const container = item.parentNode;
@@ -28,7 +28,7 @@ import Render from './render';
         item.classList.add('is_active');
     }
 
-     showRows(array) {
+    showRows(array) {
         const columnToSort = document.querySelector('[class*="sort_"]');
         let arrayToRender;
 
@@ -41,7 +41,6 @@ import Render from './render';
                 arrayToRender = this.sortedArr;
             }
             this.render.appendRows(arrayToRender);
-
         } else {
             this.sortedArr = tableData;
 
@@ -52,40 +51,42 @@ import Render from './render';
             }
             this.render.appendRows(arrayToRender);
         }
-     }
+    }
 
-     columnClick(item) {
-         this.container = item.parentNode;
-         this.siblings = [...this.container.children];
-         let arrayToRender;
+    columnClick(item) {
+        this.container = item.parentNode;
+        this.siblings = [...this.container.children];
+        let arrayToRender;
 
-         if (item.classList.contains('sort_up')) {
-             item.classList.remove('sort_up');
-             item.classList.add('sort_down');
+        if (item.classList.contains('sort_up')) {
+            item.classList.remove('sort_up');
+            item.classList.add('sort_down');
 
-             arrayToRender = this.sort.sortTable(item, this.sortedArr);
-             this.render.appendRows(arrayToRender);
+            arrayToRender = this.sort.sortTable(item, this.sortedArr);
+            this.render.appendRows(arrayToRender);
 
-         } else if (item.classList.contains('sort_down')) {
-             item.classList.remove('sort_down');
+        } else if (item.classList.contains('sort_down')) {
+            item.classList.remove('sort_down');
 
-             arrayToRender = this.sort.sortTable(item, this.sortedArr);
-             this.render.appendRows(arrayToRender);
+            arrayToRender = this.sort.sortTable(item, this.sortedArr);
+            this.render.appendRows(arrayToRender);
 
-         } else {
-             this.siblings.forEach(el => {
-                 el.classList.remove('sort_up', 'sort_down');
-             });
-             item.classList.add('sort_up');
+        } else {
+            this.siblings.forEach(el => {
+                el.classList.remove('sort_up', 'sort_down');
+            });
+            item.classList.add('sort_up');
 
-             arrayToRender = this.sort.sortTable(item, this.sortedArr);
-             this.render.appendRows(arrayToRender);
-         }
-     }
+            arrayToRender = this.sort.sortTable(item, this.sortedArr);
+            this.render.appendRows(arrayToRender);
+        }
+    }
 
-     search(searchInput) {
-         let val = searchInput.value.toLowerCase();
-         let searchResult = tableData.filter(row => row.some(el => (typeof el == 'string') ? el.toLowerCase().includes(val) : el.toString().includes(val)));
-         this.render.appendRows(searchResult);
-     }
+    search(searchInput) {
+        let val = searchInput.value.toLowerCase();
+        let searchResult = tableData.filter(row => row.some(el => {
+            return typeof el == 'string' ? el.toLowerCase().includes(val) : el.toString().includes(val);
+        }));
+        this.render.appendRows(searchResult);
+    }
 }
