@@ -72,122 +72,122 @@ if (checks.length && tableBody) {
 //     }
 // }
 
-window.onload = () => {
-    if (window.innerWidth <= 650) {
-        appendRows();
-        accordionButton.click();
-        tableFullWrapper.classList.remove('blur_bottom');
-    }
-}
+// window.onload = () => {
+//     if (window.innerWidth <= 650) {
+//         appendRows();
+//         accordionButton.click();
+//         tableFullWrapper.classList.remove('blur_bottom');
+//     }
+// }
 
-let mobile;
-function appendMobileTable(arr = tableData) {
-    tableFullWrapper.innerHTML = '';
+// let mobile;
+// function appendMobileTable(arr = tableData) {
+//     tableFullWrapper.innerHTML = '';
 
-    let mobileTable = document.createElement('div');
-    mobileTable.classList.add('mobile-table');
+//     let mobileTable = document.createElement('div');
+//     mobileTable.classList.add('mobile-table');
 
-    arr.map(row => {
-        let mobileRow = document.createElement('div');
-        mobileRow.classList.add('mobile-table__row', 'mobile-table__row_closed');
+//     arr.map(row => {
+//         let mobileRow = document.createElement('div');
+//         mobileRow.classList.add('mobile-table__row', 'mobile-table__row_closed');
 
-        let headingsArray = ['', 'Спрэд, пунктов', 'Стоимость пункта в 1 лоте', 'Размер контракта, для 1-го лота', 'Уровни Limit&Stop, пунктов', '', '', 'Своп long (длинных позиций), в валюте счёта', 'Своп short (коротких позиций), в валюте счёта'];
+//         let headingsArray = ['', 'Спрэд, пунктов', 'Стоимость пункта в 1 лоте', 'Размер контракта, для 1-го лота', 'Уровни Limit&Stop, пунктов', '', '', 'Своп long (длинных позиций), в валюте счёта', 'Своп short (коротких позиций), в валюте счёта'];
 
-        let topRow = document.createElement('div');
-        topRow.classList.add('mobile-table__main-row');
+//         let topRow = document.createElement('div');
+//         topRow.classList.add('mobile-table__main-row');
 
-        let topCell3 = document.createElement('div');
-        topCell3.classList.add('mobile-table__main-cell');
+//         let topCell3 = document.createElement('div');
+//         topCell3.classList.add('mobile-table__main-cell');
 
-        let heading3 = document.createElement('span');
-        heading3.classList.add('mobile-table__cell-heading');
-        heading3.innerText = 'Своп';
-        topCell3.append(heading3);
+//         let heading3 = document.createElement('span');
+//         heading3.classList.add('mobile-table__cell-heading');
+//         heading3.innerText = 'Своп';
+//         topCell3.append(heading3);
 
-        row.map((cell, index) => {
-            if (index == 0) {
-                let topCell = document.createElement('div');
-                topCell.classList.add('mobile-table__main-cell');
+//         row.map((cell, index) => {
+//             if (index == 0) {
+//                 let topCell = document.createElement('div');
+//                 topCell.classList.add('mobile-table__main-cell');
 
-                let value = document.createElement('span');
-                value.classList.add('mobile-table__cell-value');
-                value.append(cell);
-                topCell.append(value)
-                topRow.append(topCell);
+//                 let value = document.createElement('span');
+//                 value.classList.add('mobile-table__cell-value');
+//                 value.append(cell);
+//                 topCell.append(value)
+//                 topRow.append(topCell);
 
-                let topCell2 = document.createElement('div');
-                topCell2.classList.add('mobile-table__main-cell');
+//                 let topCell2 = document.createElement('div');
+//                 topCell2.classList.add('mobile-table__main-cell');
 
-                let heading = document.createElement('span');
-                heading.classList.add('mobile-table__cell-heading');
-                heading.innerText = 'Спрэд';
-                topCell2.append(heading);
+//                 let heading = document.createElement('span');
+//                 heading.classList.add('mobile-table__cell-heading');
+//                 heading.innerText = 'Спрэд';
+//                 topCell2.append(heading);
 
-                let value2 = document.createElement('span');
-                value2.classList.add('mobile-table__cell-value');
-                value2.innerText = '150';
-                topCell2.append(value2)
-                topRow.append(topCell2);
-                topRow.append(topCell3);
+//                 let value2 = document.createElement('span');
+//                 value2.classList.add('mobile-table__cell-value');
+//                 value2.innerText = '150';
+//                 topCell2.append(value2)
+//                 topRow.append(topCell2);
+//                 topRow.append(topCell3);
 
-                let link = document.createElement('a');
-                link.classList.add('mobile-table__button', 'icon-up-open');
-                link.setAttribute('href', '#');
-                topRow.append(link);
-                mobileRow.append(topRow);
-            }
-            if ([5, 6].includes(index)) {
-                let value = document.createElement('span');
-                value.classList.add('mobile-table__cell-value');
-                value.append(cell);
-                topCell3.append(value)
-            }
-            if (![0, 5, 6].includes(index)) {
-                let extra = document.createElement('div');
-                extra.classList.add('mobile-table__extra-cell');
+//                 let link = document.createElement('a');
+//                 link.classList.add('mobile-table__button', 'icon-up-open');
+//                 link.setAttribute('href', '#');
+//                 topRow.append(link);
+//                 mobileRow.append(topRow);
+//             }
+//             if ([5, 6].includes(index)) {
+//                 let value = document.createElement('span');
+//                 value.classList.add('mobile-table__cell-value');
+//                 value.append(cell);
+//                 topCell3.append(value)
+//             }
+//             if (![0, 5, 6].includes(index)) {
+//                 let extra = document.createElement('div');
+//                 extra.classList.add('mobile-table__extra-cell');
 
-                let heading = document.createElement('span');
-                heading.classList.add('mobile-table__cell-heading');
-                heading.innerText = headingsArray[index];
-                extra.append(heading);
+//                 let heading = document.createElement('span');
+//                 heading.classList.add('mobile-table__cell-heading');
+//                 heading.innerText = headingsArray[index];
+//                 extra.append(heading);
 
-                let value = document.createElement('span');
-                value.classList.add('mobile-table__cell-value');
-                value.append(cell);
-                extra.append(value)
-                mobileRow.append(extra);
-            }
-        })
+//                 let value = document.createElement('span');
+//                 value.classList.add('mobile-table__cell-value');
+//                 value.append(cell);
+//                 extra.append(value)
+//                 mobileRow.append(extra);
+//             }
+//         })
 
-        mobileTable.append(mobileRow);
-        tableFullWrapper.append(mobileTable);
+//         mobileTable.append(mobileRow);
+//         tableFullWrapper.append(mobileTable);
 
-    })
+//     })
 
-    handleMobileTableButtons();
-    mobile = document.getElementsByClassName('mobile-table')[0];
-    setClasses();
+//     handleMobileTableButtons();
+//     mobile = document.getElementsByClassName('mobile-table')[0];
+//     setClasses();
 
-    let slashArray = [...document.querySelectorAll('.mobile-table__main-cell:nth-child(3)>.mobile-table__cell-value:nth-child(2)')];
-    slashArray.map(el => {
-        el.innerText += '\\';
-    })
-}
+//     let slashArray = [...document.querySelectorAll('.mobile-table__main-cell:nth-child(3)>.mobile-table__cell-value:nth-child(2)')];
+//     slashArray.map(el => {
+//         el.innerText += '\\';
+//     })
+// }
 
-function handleMobileTableButtons() {
-    const buttonArray = [...document.getElementsByClassName('mobile-table__button')];
+// function handleMobileTableButtons() {
+//     const buttonArray = [...document.getElementsByClassName('mobile-table__button')];
 
-    buttonArray.map(button => {
-        button.addEventListener('click', e => {
-            const _this = e.currentTarget;
-            const row = _this.parentNode.parentNode;
-            const cells = [...row.getElementsByClassName('mobile-table__extra-cell')];
+//     buttonArray.map(button => {
+//         button.addEventListener('click', e => {
+//             const _this = e.currentTarget;
+//             const row = _this.parentNode.parentNode;
+//             const cells = [...row.getElementsByClassName('mobile-table__extra-cell')];
 
-            e.preventDefault();
-            row.classList.toggle('mobile-table__row_closed');
-        })
-    })
-}
+//             e.preventDefault();
+//             row.classList.toggle('mobile-table__row_closed');
+//         })
+//     })
+// }
 
 // function setClasses() {
 //     if (mobile) {
@@ -372,60 +372,64 @@ const accordionContent = document.getElementById('accordionContent');
 if (accordionButton && accordionContent) {
     const contentHeight = window.getComputedStyle(accordionContent).height;
 
-    accordionButton.addEventListener('click', e => {
-        const _this = e.currentTarget;
-        const contentHeight = window.getComputedStyle(accordionContent).height;
-        const accord = _this.parentNode;
+    listener.accordion(accordionButton, accordionContent, contentHeight)
+    // accordionButton.addEventListener('click', e => {
+    //     const _this = e.currentTarget;
+    //     const contentHeight = window.getComputedStyle(accordionContent).height;
+    //     const accord = _this.parentNode;
 
-        e.preventDefault();
-        if (accord.classList.contains('is_closed')) {
-            accord.classList.toggle('is_closed');
-            setTimeout(() => {
-                accordionContent.style.opacity = '1';
-            }, 300);
-        } else {
-            accordionContent.style.opacity = '0';
-            accordionContent.style.maxHeight = contentHeight;
-            setTimeout(() => {
-                accord.classList.toggle('is_closed');
-            }, 300);
-        }
-    })
+    //     e.preventDefault();
+    //     if (accord.classList.contains('is_closed')) {
+    //         accord.classList.toggle('is_closed');
+    //         setTimeout(() => {
+    //             accordionContent.style.opacity = '1';
+    //         }, 300);
+    //     } else {
+    //         accordionContent.style.opacity = '0';
+    //         accordionContent.style.maxHeight = contentHeight;
+    //         setTimeout(() => {
+    //             accord.classList.toggle('is_closed');
+    //         }, 300);
+    //     }
+    // })
 }
 
 //поиск
 let searchButtons = [...document.getElementsByClassName('search-button')];
 let searchBar = document.getElementById('searchBar');
 if (searchButtons.length && searchBar) {
-    searchButtons.map(el => {
-        el.addEventListener('click', e => {
-            e.preventDefault();
-            searchBar.classList.toggle('search-panel__search-bar_hidden');
-            setTimeout(() => {
-                if (!searchBar.classList.contains('search-panel__search-bar_hidden')) {
-                    searchBar.querySelector('.search-bar__input').focus();
-                } else {
-                    searchBar.querySelector('.search-bar__input').value = '';
-                }
-            }, 200);
-        })
-    })
+    listener.searchButton(searchButtons, searchBar);
+    // searchButtons.map(el => {
+    //     el.addEventListener('click', e => {
+    //         e.preventDefault();
+    //         searchBar.classList.toggle('search-panel__search-bar_hidden');
+    //         setTimeout(() => {
+    //             if (!searchBar.classList.contains('search-panel__search-bar_hidden')) {
+    //                 searchBar.querySelector('.search-bar__input').focus();
+    //             } else {
+    //                 searchBar.querySelector('.search-bar__input').value = '';
+    //             }
+    //         }, 200);
+    //     })
+    // })
 }
 
 let searchInput = document.getElementById('searchInput');
 if (searchInput) {
-    searchInput.addEventListener('input', e => {
-        let val = searchInput.value.toLowerCase();
-        let searchResult = tableData.filter(row => row.some(el => (typeof el == 'string') ? el.toLowerCase().includes(val) : el.toString().includes(val)));
-        appendRows(searchResult);
-    })
+    listener.searchInput(searchInput);
+    // searchInput.addEventListener('input', e => {
+    //     let val = searchInput.value.toLowerCase();
+    //     let searchResult = tableData.filter(row => row.some(el => (typeof el == 'string') ? el.toLowerCase().includes(val) : el.toString().includes(val)));
+    //     appendRows(searchResult);
+    // })
 }
 
 let mobileMenu = document.getElementById('mobileMenu');
 let menuPanel = document.getElementsByClassName('data__search-panel')[0];
 if (mobileMenu) {
-    mobileMenu.addEventListener('click', e => {
-        e.preventDefault();
-        menuPanel.classList.toggle('show');
-    })
+    listener.mobileMenu(mobileMenu);
+    // mobileMenu.addEventListener('click', e => {
+    //     e.preventDefault();
+    //     menuPanel.classList.toggle('show');
+    // })
 }

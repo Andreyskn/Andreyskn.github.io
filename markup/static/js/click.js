@@ -12,7 +12,17 @@ import Render from './render';
         this.arrayToRender = [];
         this.sort = new Sort();
         this.render = new Render();
+
+        this.init();
     }
+
+     init() {
+         if (window.innerWidth <= 650) {
+             this.render.appendRows(tableData);
+             // accordionButton.click();
+            //  tableFullWrapper.classList.remove('blur_bottom');
+         }
+     }
 
     switchActive(item) {
         this.container = item.parentNode;
@@ -70,5 +80,11 @@ import Render from './render';
              this.arrayToRender = this.sort.sortTable(item, this.sortedArr);
              this.render.appendRows(this.arrayToRender);
          }
+     }
+
+     search(searchInput) {
+         let val = searchInput.value.toLowerCase();
+         let searchResult = tableData.filter(row => row.some(el => (typeof el == 'string') ? el.toLowerCase().includes(val) : el.toString().includes(val)));
+         this.render.appendRows(searchResult);
      }
 }
