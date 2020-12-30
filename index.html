@@ -77,6 +77,14 @@
 							],
 						},
 					},
+					bmh7kiq6g4ea: {
+						id: 'bmh7kiq6g4ea',
+						state: {
+							text:
+								'# Journal ([src](https://github.com/Andreyskn/Journal))\n\nNote-taking app written using Typescript, React, Redux, Immutable.js, SCSS and Blueprint UI kit.\n\nIt allows to create:\n\n- markdown notes\n- task lists\n- lists of questions and answers\n\n##  Architecture\n\nThere are two main parts in the app:\n\n- **core**: acts as an operating system\n- **file plugins**: implement the actual content of files *(notes, tasks, questions)*\n\n#### Core\n\nThe core contains:\n\n- **file tree**: used to create, open, delete or rename files and folders, allows to move files between folders\n- **tab panel**: used to switch between open files and to create `Untitled` files\n- **taskbar**: allows to open windows and shows names of currently open windows\n- **windows**: boxes for arbitrary content, windows can be minimized, resized and moved freely across a viewport\n- **viewer**: area used to display and edit the content of the files\n\n#### File plugins\n\nEach file plugin is independent from the rest of the code and can be developed as a stand alone app.\n\n## Features\n\n- app state is persisted locally using IndexedDB\n- undo/redo for file state (ctrl+Z, ctrl+shift+Z)\n- file export and import in `.md` format\n- recycle bin for deleted files\n- name validation for new and relocated files\n\n## Tools for better DX\n\n- helper for creating CSS class names following BEM methodology ([link](https://github.com/Andreyskn/Journal/blob/master/src/utils/bem.ts))\n- wrapper that simplifies usage of Redux and useReducer ([link](https://github.com/Andreyskn/Journal/tree/master/src/core/hooks))\n- scripts for generating template code for components and file plugins ([link](https://github.com/Andreyskn/Journal/tree/master/scripts))\n\n',
+							layout: 'preview',
+						},
+					},
 				},
 				files: {
 					'4r6lki2tzdn0': {
@@ -93,9 +101,9 @@
 					wkpeki2tzcbr: {
 						__tag: 'file',
 						id: 'wkpeki2tzcbr',
-						lastModifiedAt: 1606648528049,
-						name: 'description.n',
-						path: '/main/description.n',
+						lastModifiedAt: 1609326100099,
+						name: 'description_ru.n',
+						path: '/main/description_ru.n',
 						parent: 'main',
 						type: 'note',
 						isTrashed: false,
@@ -174,32 +182,37 @@
 						isTrashed: false,
 						data: {
 							examples: 'po6xki2tztmf',
-							'description.n': 'wkpeki2tzcbr',
+							'description_en.n': 'nlpekiq6g4ea',
+							'description_ru.n': 'wkpeki2tzcbr',
 						},
+					},
+					nlpekiq6g4ea: {
+						__tag: 'file',
+						id: 'nlpekiq6g4ea',
+						lastModifiedAt: 1608048314434,
+						name: 'description_en.n',
+						path: '/main/description_en.n',
+						parent: 'main',
+						type: 'note',
+						isTrashed: false,
+						data: 'bmh7kiq6g4ea',
 					},
 				},
 				activeFile: {
 					__tag: 'active-file',
 					ref: {
 						__tag: 'file',
-						id: 'wkpeki2tzcbr',
-						lastModifiedAt: 1606648528049,
-						name: 'description.n',
-						path: '/main/description.n',
+						id: 'nlpekiq6g4ea',
+						lastModifiedAt: 1608048314434,
+						name: 'description_en.n',
+						path: '/main/description_en.n',
 						parent: 'main',
 						type: 'note',
 						isTrashed: false,
-						data: '33mmki2tzcbr',
+						data: 'bmh7kiq6g4ea',
 					},
 				},
 				tabs: {
-					wkpeki2tzcbr: {
-						__tag: 'tab',
-						id: 'wkpeki2tzcbr',
-						name: 'description.n',
-						path: '/main/description.n',
-						type: 'note',
-					},
 					'0t7xki2tzaxb': {
 						__tag: 'tab',
 						id: '0t7xki2tzaxb',
@@ -213,6 +226,20 @@
 						name: 'questions.q',
 						path: '/main/examples/questions.q',
 						type: 'questions',
+					},
+					wkpeki2tzcbr: {
+						__tag: 'tab',
+						id: 'wkpeki2tzcbr',
+						name: 'description_ru.n',
+						path: '/main/description_ru.n',
+						type: 'note',
+					},
+					nlpekiq6g4ea: {
+						__tag: 'tab',
+						id: 'nlpekiq6g4ea',
+						name: 'description_en.n',
+						path: '/main/description_en.n',
+						type: 'note',
 					},
 				},
 				windows: {
