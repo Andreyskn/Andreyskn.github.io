@@ -1,288 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
-		<title>Journal</title>
-		<link rel="icon" href="favicon.png" />
-		<link href="main.css" rel="stylesheet" />
+		<link rel="icon" type="image/svg+xml" href="./icon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Script Runner</title>
+
+		<script>
+			// TODO: move to .ts file
+			(function () {
+				const originalError = console.error;
+				console.error = function (...args) {
+					if (
+						typeof args[0] === 'string' &&
+						args[0].startsWith(
+							'In HTML, %s cannot be a child of <%s>'
+						) &&
+						args[1] === '<div>' &&
+						args[2] === 'option'
+					) {
+						return;
+					}
+					originalError.apply(console, args);
+				};
+			})();
+		</script>
+		<script type="module" crossorigin src="./assets/index-CkhJBcEX.js"></script>
+		<link rel="modulepreload" crossorigin href="./assets/dndContext-CYx_dg5D.js">
+		<link rel="stylesheet" crossorigin href="./assets/index-NGoxvIJd.css">
 	</head>
 	<body>
 		<div id="root"></div>
-		<script>
-			window.__PRELOADED_STATE__ = {
-				data: {
-					w1sqki2tzaxa: {
-						id: 'w1sqki2tzaxa',
-						state: {
-							tasks: [
-								{
-									createdAt: 1606642408109,
-									status: 'done',
-									id: 'ueoski2xeo4t',
-									text: 'Finished task',
-									priority: 'medium',
-								},
-								{
-									createdAt: 1606642395002,
-									status: 'in-progress',
-									id: '990iki2xee0q',
-									text: 'Hight priority task in progress',
-									priority: 'high',
-								},
-								{
-									createdAt: 1606642384178,
-									status: 'to-do',
-									id: 'syufki2xe5o2',
-									text: 'Medium priority task',
-									priority: 'medium',
-								},
-								{
-									createdAt: 1606642367083,
-									status: 'to-do',
-									id: 'jreeki2xdsh7',
-									text: 'Low priority task',
-									priority: 'low',
-								},
-							],
-						},
-					},
-					'33mmki2tzcbr': {
-						id: '33mmki2tzcbr',
-						state: {
-							text:
-								'# Journal ([src](https://github.com/Andreyskn/Journal))\n\nПриложение для ведения заметок. Написано с применением React, Redux, Immutable.js, SCSS и библиотеки компонентов Blueprint.\n\nПозволяет создавать:\n\n- markdown документы\n- списки задач\n- списки вопросов и ответов\n\n##  Архитектура\n\nОсновная часть приложения включает в себя:\n\n- **дерево файлов**: позволяет создавать/открывать/удалять/переименовывать файлы и папки, перемещать файлы между папками\n- **панель табов**: позволяет переключаться между ранее открытыми файлами и создавать Untitled файлы\n- **таскбар**: позволяет открывать окна, отображает названия открытых окон\n- **окна**: контейнеры, открываемые поверх остального приложения с возможностью сворачивания, изменения размеров, и перетаскивания по экрану\n- **вьювер**: область для просмотра и редактирования содержимого файлов\n\n---\n\nКод отвечающий за рендеринг каждого типа файлов независим от остального приложения и подключается как плагин. В теории плагины можно разрабатывать отдельно от основного приложения (например, при помощи Module Federation)\n\n##  Функциональность\n\n- состояние приложения сохраняется локально в IndexedDB\n- undo/redo для состояния файлов (ctrl+Z, ctrl+shift+Z)\n- экспорт/импорт файлов в формате `.md`\n- корзина для удаленных файлов\n- валидация имен новых и перемещаемых файлов\n\n## Инструменты для улучшения DX\n\n- хелпер для создания CSS классов по БЭМ ([ссылка](https://github.com/Andreyskn/Journal/blob/master/src/utils/bem.ts))\n- обвязка для упрощения работы с Redux и useReducer ([ссылка](https://github.com/Andreyskn/Journal/tree/master/src/core/hooks))\n- скрипты для генерации шаблонного кода компонентов и файловых плагинов ([ссылка](https://github.com/Andreyskn/Journal/tree/master/scripts))\n\n',
-							layout: 'preview',
-						},
-					},
-					'6pm3ki2tzdn0': {
-						id: '6pm3ki2tzdn0',
-						state: {
-							items: [
-								{
-									id: 'bwmaki2xgp59',
-									question: 'Question without answer',
-									answer: '',
-									isExpanded: false,
-								},
-								{
-									id: 'xcnlki2xfm8z',
-									question:
-										'Question with answer (left click to expand, right click to edit/delete)',
-									answer:
-										'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-									isExpanded: false,
-								},
-							],
-						},
-					},
-					bmh7kiq6g4ea: {
-						id: 'bmh7kiq6g4ea',
-						state: {
-							text:
-								'# Journal ([src](https://github.com/Andreyskn/Journal))\n\nNote-taking app written using Typescript, React, Redux, Immutable.js, SCSS and Blueprint UI kit.\n\nIt allows to create:\n\n- markdown notes\n- task lists\n- lists of questions and answers\n\n##  Architecture\n\nThere are two main parts in the app:\n\n- **core**: acts as an operating system\n- **file plugins**: implement the actual content of files *(notes, tasks, questions)*\n\n#### Core\n\nThe core contains:\n\n- **file tree**: used to create, open, delete or rename files and folders, allows to move files between folders\n- **tab panel**: used to switch between open files and to create `Untitled` files\n- **taskbar**: allows to open windows and shows names of currently open windows\n- **windows**: boxes for arbitrary content, windows can be minimized, resized and moved freely across a viewport\n- **viewer**: area used to display and edit the content of the files\n\n#### File plugins\n\nEach file plugin is independent from the rest of the code and can be developed as a stand alone app.\n\n## Features\n\n- app state is persisted locally using IndexedDB\n- undo/redo for file state (ctrl+Z, ctrl+shift+Z)\n- file export and import in `.md` format\n- recycle bin for deleted files\n- name validation for new and relocated files\n\n## Tools for better DX\n\n- helper for creating CSS class names following BEM methodology ([link](https://github.com/Andreyskn/Journal/blob/master/src/utils/bem.ts))\n- wrapper that simplifies usage of Redux and useReducer ([link](https://github.com/Andreyskn/Journal/tree/master/src/core/hooks))\n- scripts for generating template code for components and file plugins ([link](https://github.com/Andreyskn/Journal/tree/master/scripts))\n\n',
-							layout: 'preview',
-						},
-					},
-				},
-				files: {
-					'4r6lki2tzdn0': {
-						__tag: 'file',
-						id: '4r6lki2tzdn0',
-						lastModifiedAt: 1606636700136,
-						name: 'questions.q',
-						path: '/main/examples/questions.q',
-						parent: 'po6xki2tztmf',
-						type: 'questions',
-						isTrashed: false,
-						data: '6pm3ki2tzdn0',
-					},
-					wkpeki2tzcbr: {
-						__tag: 'file',
-						id: 'wkpeki2tzcbr',
-						lastModifiedAt: 1609326100099,
-						name: 'description_ru.n',
-						path: '/main/description_ru.n',
-						parent: 'main',
-						type: 'note',
-						isTrashed: false,
-						data: '33mmki2tzcbr',
-					},
-					root: {
-						__tag: 'file',
-						id: 'root',
-						lastModifiedAt: 1606636640159,
-						name: '',
-						path: '/',
-						parent: 'root',
-						type: 'directory',
-						isTrashed: false,
-						data: {
-							main: 'main',
-							trash: 'trash',
-							favorites: 'favorites',
-						},
-					},
-					po6xki2tztmf: {
-						__tag: 'file',
-						id: 'po6xki2tztmf',
-						lastModifiedAt: 1606636676535,
-						name: 'examples',
-						path: '/main/examples',
-						parent: 'main',
-						type: 'directory',
-						isTrashed: false,
-						data: {
-							'questions.q': '4r6lki2tzdn0',
-							'tasks.t': '0t7xki2tzaxb',
-						},
-					},
-					'0t7xki2tzaxb': {
-						__tag: 'file',
-						id: '0t7xki2tzaxb',
-						lastModifiedAt: 1606636702584,
-						name: 'tasks.t',
-						path: '/main/examples/tasks.t',
-						parent: 'po6xki2tztmf',
-						type: 'task-list',
-						isTrashed: false,
-						data: 'w1sqki2tzaxa',
-					},
-					favorites: {
-						__tag: 'file',
-						id: 'favorites',
-						lastModifiedAt: 1606636640157,
-						name: 'favorites',
-						path: '/favorites',
-						parent: 'root',
-						type: 'directory',
-						isTrashed: false,
-						data: {},
-					},
-					trash: {
-						__tag: 'file',
-						id: 'trash',
-						lastModifiedAt: 1606636640157,
-						name: 'trash',
-						path: '/trash',
-						parent: 'root',
-						type: 'directory',
-						isTrashed: false,
-						data: {},
-					},
-					main: {
-						__tag: 'file',
-						id: 'main',
-						lastModifiedAt: 1606636640156,
-						name: 'main',
-						path: '/main',
-						parent: 'root',
-						type: 'directory',
-						isTrashed: false,
-						data: {
-							examples: 'po6xki2tztmf',
-							'description_en.n': 'nlpekiq6g4ea',
-							'description_ru.n': 'wkpeki2tzcbr',
-						},
-					},
-					nlpekiq6g4ea: {
-						__tag: 'file',
-						id: 'nlpekiq6g4ea',
-						lastModifiedAt: 1608048314434,
-						name: 'description_en.n',
-						path: '/main/description_en.n',
-						parent: 'main',
-						type: 'note',
-						isTrashed: false,
-						data: 'bmh7kiq6g4ea',
-					},
-				},
-				activeFile: {
-					__tag: 'active-file',
-					ref: {
-						__tag: 'file',
-						id: 'nlpekiq6g4ea',
-						lastModifiedAt: 1608048314434,
-						name: 'description_en.n',
-						path: '/main/description_en.n',
-						parent: 'main',
-						type: 'note',
-						isTrashed: false,
-						data: 'bmh7kiq6g4ea',
-					},
-				},
-				tabs: {
-					'0t7xki2tzaxb': {
-						__tag: 'tab',
-						id: '0t7xki2tzaxb',
-						name: 'tasks.t',
-						path: '/main/examples/tasks.t',
-						type: 'task-list',
-					},
-					'4r6lki2tzdn0': {
-						__tag: 'tab',
-						id: '4r6lki2tzdn0',
-						name: 'questions.q',
-						path: '/main/examples/questions.q',
-						type: 'questions',
-					},
-					wkpeki2tzcbr: {
-						__tag: 'tab',
-						id: 'wkpeki2tzcbr',
-						name: 'description_ru.n',
-						path: '/main/description_ru.n',
-						type: 'note',
-					},
-					nlpekiq6g4ea: {
-						__tag: 'tab',
-						id: 'nlpekiq6g4ea',
-						name: 'description_en.n',
-						path: '/main/description_en.n',
-						type: 'note',
-					},
-				},
-				windows: {
-					console: {
-						__tag: 'window',
-						id: 'console',
-						position: {
-							top: 10,
-							left: 10,
-						},
-						width: 600,
-						height: 300,
-						status: 'closed',
-						isMaximized: false,
-					},
-					recycle: {
-						__tag: 'window',
-						id: 'recycle',
-						position: {
-							top: 14,
-							left: 14,
-						},
-						width: 600,
-						height: 300,
-						status: 'closed',
-						isMaximized: false,
-					},
-					dev: {
-						__tag: 'window',
-						id: 'dev',
-						position: {
-							top: 10,
-							left: 10,
-						},
-						width: 600,
-						height: 300,
-						status: 'closed',
-						isMaximized: false,
-					},
-				},
-				windowOrder: [],
-			};
-		</script>
-		<script src="main.js"></script>
 	</body>
 </html>
